@@ -328,7 +328,7 @@ Begin
 		Begin try
 			Begin Tran
 				Update Usuarios Set Nombre = @Nombre  Where NombreUsuario = @NombreUsuario
-				Update UsuariosEmpleado Set HoraInicio = @HoraInicio, HoraInicio = @HoraInicio  Where NombreUsuario = @NombreUsuario
+				Update UsuariosEmpleado Set HoraInicio = @HoraInicio, HoraFin = @HoraFin  Where NombreUsuario = @NombreUsuario
 			Commit Tran
 			return 1 
 			End try
