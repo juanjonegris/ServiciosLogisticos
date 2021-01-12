@@ -438,8 +438,6 @@ Begin
 End
 Go
 
-
-
 --------- SolicitudPaquete ------------
 
 Create Procedure SolicitudPaqueteAlta @CodigodeBarras int, @NumeroInterno int As
