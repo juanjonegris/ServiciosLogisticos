@@ -1,0 +1,335 @@
+﻿using EC;
+using Persistencia.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Persistencia.Clases
+{
+    internal class PersistenciaUsuarioEmpleado : IPersistenciaUsuarioEmpleado
+    {
+        #region singleton
+        private static PersistenciaUsuarioEmpleado _instancia = null;
+
+        private PersistenciaUsuarioEmpleado() { }
+
+        public static PersistenciaUsuarioEmpleado GetInstancia()
+        {
+            if (_instancia == null)
+                _instancia = new PersistenciaUsuarioEmpleado();
+
+            return _instancia;
+        }
+        #endregion
+
+
+        public void AgregarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
+
+            // Alta Usuario Sql
+            SqlCommand oComando = new SqlCommand("NuevoUsuario", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
+            SqlParameter _contra = new SqlParameter("@Contrasenia", UE.Contrasenia);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_Retorno);
+
+            try
+            {
+                oConexion.Open();
+
+                oComando.ExecuteNonQuery();
+
+                int returned_value = Convert.ToInt32(_Retorno.Value);
+
+                if (returned_value == -1)
+                    throw new Exception("Usuario existente");
+                else if (returned_value == -2)
+                    throw new Exception("No se puede Crear usuario Login");
+                else if (returned_value == -3)
+                    throw new Exception("No se puede crear usuario BD");
+                else if (returned_value == -4)
+                    throw new Exception("Problema para asignar permisos al usuario");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            SqlCommand oComando2 = new SqlCommand("UsuariosEmpleadoAlta", oConexion);
+            oComando2.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
+            SqlParameter _hini = new SqlParameter("@HoraInicio", UE.HoraInicio);
+            SqlParameter _hfin = new SqlParameter("@HoraFin", UE.HoraFin);
+
+            SqlParameter _Retorno2 = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno2.Direction = ParameterDirection.ReturnValue;
+
+            oComando2.Parameters.Add(_nomUsu);
+            oComando2.Parameters.Add(_contra);
+            oComando2.Parameters.Add(_nombre);
+            oComando2.Parameters.Add(_hini);
+            oComando2.Parameters.Add(_hfin);
+            oComando.Parameters.Add(_Retorno2);
+
+
+            //ACA
+            try
+            {
+                oConexion.Open();
+                oComando2.ExecuteNonQuery();
+
+                int returned_value = Convert.ToInt32(_Retorno2.Value);
+
+                if (returned_value == -1)
+                    throw new Exception("El nombre de usuario ya se encuentra registrado");
+                if (returned_value == -2)
+                    throw new Exception("Ha habido un error al intentar dar de alta el usuario");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+        }
+
+        public void EliminarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
+
+            SqlCommand oComando = new SqlCommand("UsuariosEmpleadoBaja", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_Retorno);
+
+            try
+            {
+                oConexion.Open();
+                oComando.ExecuteNonQuery();
+
+                int returned_value = Convert.ToInt32(_Retorno.Value);
+
+                if (returned_value == -1)
+                    throw new Exception("El usuario que intenta borrar no se encuentra registrado");
+                if (returned_value == -2)
+                    throw new Exception("Ha habido un error al intentar borrar el usuario");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+        }
+
+        public void ModificarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
+
+            // Alta Usuario Sql
+            SqlCommand oComando = new SqlCommand("UsuariosEmpleadoModificar", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
+            SqlParameter _contra = new SqlParameter("@Contrasenia", UE.Contrasenia);
+            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
+            SqlParameter _horaini = new SqlParameter("@HoraInicio", UE.HoraInicio);
+            SqlParameter _horafin = new SqlParameter("@HoraFin", UE.HoraFin);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_nombre);
+            oComando.Parameters.Add(_horaini);
+            oComando.Parameters.Add(_horafin);
+            oComando.Parameters.Add(_Retorno);
+
+            try
+            {
+                oConexion.Open();
+                oComando.ExecuteNonQuery();
+
+                int returned_value = Convert.ToInt32(_Retorno.Value);
+
+                if (returned_value == -1)
+                    throw new Exception("No existe el usuario que intenta modificar");
+                if (returned_value == -2)
+                    throw new Exception("Ha ocurrido un error al intentar modificar el usuario");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+        }
+
+        public UsuarioEmpleado BuscarUsuarioEmpleado(string pNombreUsuario, Usuario UELogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
+
+            SqlCommand oComando = new SqlCommand("UsuariosEmpleadoBuscar", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", pNombreUsuario);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_Retorno);
+
+            UsuarioEmpleado usuarioEmpleado = null;
+
+            try
+            {
+                oConexion.Open();
+                SqlDataReader dr = oComando.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    string nomUsu = pNombreUsuario;
+                    string contra = dr["Contrasenia"].ToString();
+                    string nombre = dr["Nombre"].ToString();
+                    DateTime horaini = (DateTime)dr["HoraInicio"];
+                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+
+            return usuarioEmpleado;
+        }
+
+        internal UsuarioEmpleado BuscarUsuarioEmpleadoTodos(string pNombreUsuario, Usuario UELogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
+
+            SqlCommand oComando = new SqlCommand("UsuariosEmpleadoBuscarTodos", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", pNombreUsuario);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_Retorno);
+
+            UsuarioEmpleado usuarioEmpleado = null;
+
+            try
+            {
+                oConexion.Open();
+                SqlDataReader dr = oComando.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    string nomUsu = pNombreUsuario;
+                    string contra = dr["Contrasenia"].ToString();
+                    string nombre = dr["Nombre"].ToString();
+                    DateTime horaini = (DateTime)dr["HoraInicio"];
+                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+
+            return usuarioEmpleado;
+        }
+
+        public UsuarioEmpleado LogueoUsuario(string pNombreUsuario, string pContrasenia)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
+
+            SqlCommand oComando = new SqlCommand("UsuariosLogueo", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", pNombreUsuario);
+            SqlParameter _contra = new SqlParameter("@Contrasenia", pContrasenia);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_Retorno);
+
+            UsuarioEmpleado usuarioEmpleado = null;
+
+            try
+            {
+                oConexion.Open();
+                SqlDataReader dr = oComando.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    string nomUsu = pNombreUsuario;
+                    string contra = dr["Contrasenia"].ToString();
+                    string nombre = dr["Nombre"].ToString();
+                    DateTime horaini = (DateTime)dr["HoraInicio"];
+                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+
+            return usuarioEmpleado;
+        }
+
+    }
+
+
+}

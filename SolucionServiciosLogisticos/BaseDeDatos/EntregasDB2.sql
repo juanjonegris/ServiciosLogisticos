@@ -97,55 +97,20 @@ CREATE TABLE SolicitudPaquete (
 )
 go 
 
+------------
+
+/*
+Insert into Usuarios (NombreUsuario, Contrasenia, Nombre ) values ('jaum12', 'abc45!', 'Pepe parada'); 
+Insert into UsuariosEmpresa values ('jaum12', 091645998, 'Miguelete 1972', 'juanjose.negris@gmail.com');
+Insert into UsuariosEmpleado values ('jaum12', '08:00', '10:00' );  
+Insert into SolicitudesDeEntrega (FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado ) values ( dateadd(dd,2,GETDATE()), 'Anibal Balsco', 'Goes 2256', 'jaum12');  
+Insert into Paquetes  values ( 12345, 'fragil', 'Piscina de 80 litros', 20.5, 'jaum12');  
+Insert into SolicitudPaquete values (12345, 2 ); 
+*/
+
+-- Select * from SolicitudPaquete
 
 ---------- Usuarios de SQL -------------------------
-
------------- NEW DEV -----------------
-CREATE PROCEDURE NuevoUsuario @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
-Begin
-
-	If  Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario )
-	return -1
-
-	Declare @VarSentencia varchar (200)
-
-	-- Multiples acciones - TRN
-	Begin TRAN
-
-		--primero creo el usuario de logueo
-		SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
-		EXEC(@VarSentencia)
-
-		if (@@ERROR <> 0 )
-		begin 
-			Rollback TRAN
-			return -2
-		end
-
-		--segundo creo usuari db
-		Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
-		exec (@VarSentencia)
-
-		if (@@ERROR <> 0 )
-		begin 
-			Rollback TRAN
-			return -3
-		end
-
-				--segundo creo usuari db con permisos
-		Set @VarSentencia = 'GRANT EXECUTE TO [' +@NombreUsuario + ']'
-		exec (@VarSentencia)
-
-		if (@@ERROR <> 0 )
-		BEGIN 
-			Rollback TRAN
-			return -4
-		END
- COMMIT TRAN
-END
-GO
-
--------------------------------------
 
 Create Procedure NuevoUsuarioSql @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
 Begin
@@ -229,7 +194,7 @@ Begin
 		End Try
  		Begin Catch
 			Rollback Tran
-			Return -2
+			Return -3
 		End Catch
 End
 go
@@ -324,7 +289,7 @@ Begin
 		End Try
  		Begin Catch
 			Rollback Tran
-			Return -2
+			Return -3
 		End Catch
 End
 go
@@ -404,7 +369,7 @@ if (Not Exists(Select * From UsuariosEmpleado Where NombreUsuario = @NombreUsuar
 		return -1
 	End
 Insert into SolicitudesDeEntrega (FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado) values (@FechaDeEntrega, @NombreDestinatario, @DireccionDestinatario, @NombreUsuarioEmpleado )
-	RETURN ident_current('SolicitudesDeEntrega');
+	return 1
 End
 go
 
@@ -432,8 +397,8 @@ Begin
 End
 Go
 
-Create Procedure SolicitudesDeEntregaListar AS
-	Select * From SolicitudesDeEntrega
+Create Procedure SolicitudesDeEntregaListarEnCamino AS
+	Select * From SolicitudesDeEntrega Where EstadoSolicitud = 'En Camino'
 Go
 
 
@@ -451,27 +416,13 @@ go
 
 Create Procedure PaquetesAlta @CodigodeBarras int, @Tipo varchar(10), @Descripcion varchar(Max), @Peso decimal, @NombreUsuarioEmpresa varchar(50) As
 Begin
-		if( Exists (Select * From Paquetes Where CodigodeBarras = @CodigodeBarras))
+	if (Not Exists (Select * From UsuariosEmpresa Where NombreUsuario = @NombreUsuarioEmpresa))
 	Begin
 		return -1
 	End 
 
-	if (Not Exists (Select * From UsuariosEmpresa Where NombreUsuario = @NombreUsuarioEmpresa))
-	Begin
-		return -2
-	End 
-
 	Insert into Paquetes  values (@CodigodeBarras, @Tipo, @Descripcion, @Peso, @NombreUsuarioEmpresa )
-	return 1 
-
-	if @@ERROR <> 0 
-		return -3
-End
-Go
-
-Create Procedure PaqueteBuscar @CodigodeBarras int AS 
-Begin 
- Select * from Paquetes where CodigodeBarras = @CodigodeBarras
+	return 1
 End
 Go
 
@@ -481,11 +432,13 @@ Begin
 End
 Go
 
+
 Create Procedure PaquetesListadoPorSolicitud @NumeroInterno int As
 Begin
 	Select * From Paquetes as p INNER JOIN SolicitudPaquete as sp ON p.CodigodeBarras = sp.CodigodeBarras Where sp.NumeroInterno = @NumeroInterno
 End
 Go
+
 
 --------- SolicitudPaquete ------------
 
