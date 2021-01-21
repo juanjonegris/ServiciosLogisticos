@@ -160,12 +160,15 @@ namespace Persistencia.Clases
             return listPaqueteSinSol;
         }
 
-        public List<Paquete> ListarPaquetesEnSolicitud(Usuario ULogueado)
+        public List<Paquete> ListarPaquetesEnSolicitud(int pNnumeroInterno, Usuario ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
             SqlCommand oComando = new SqlCommand("PaquetesListadoPorSolicitud", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
+            SqlParameter _numInt = new SqlParameter("@NumeroInterno", pNnumeroInterno);
+            
+            oComando.Parameters.Add(_numInt);
 
             List<Paquete> listPaquetePorSol = new List<Paquete>();
             int codBar;

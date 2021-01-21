@@ -432,6 +432,13 @@ Begin
 End
 Go
 
+
+Create Procedure SolicitudesDeEntregaBuscar @NumeroInterno int AS 
+Begin 
+ Select * from SolicitudesDeEntrega where NumeroInterno = @NumeroInterno
+End
+Go
+
 Create Procedure SolicitudesDeEntregaListar AS
 	Select * From SolicitudesDeEntrega
 Go

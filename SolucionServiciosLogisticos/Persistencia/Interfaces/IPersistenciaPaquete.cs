@@ -13,6 +13,6 @@ namespace Persistencia.Interfaces
         void AgregarPaquete(Paquete P, Usuario ULogueado);
         Paquete BuscarPaquete(int pCodigoBarras, Usuario ULogueado);
         List<Paquete> ListarPaquetesSinSolicitud(Usuario ULogueado);
-        List<Paquete> ListarPaquetesEnSolicitud(Usuario ULogueado);
+        List<Paquete> ListarPaquetesEnSolicitud(int numeroInterno, Usuario ULogueado);
     }
 }
