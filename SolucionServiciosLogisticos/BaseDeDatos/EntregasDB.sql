@@ -97,7 +97,90 @@ CREATE TABLE SolicitudPaquete (
 )
 go 
 
+-------------------------- Insert Data --------------------------------
 
+
+INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'abg23!', 'Juan Jose Negris'),
+	('Mario Prueba', 'acb23@', 'Mario Puzo'),('James Prueba', 'adf23:', 'James Batdrock'),
+	('Ximena Prueba', 'afs24,', 'Ximena Smith'),('Boris Prueba', 'atr23!', 'Boris Hendrson')
+Go
+
+INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
+	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
+Go	
+
+INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
+	('Boris Prueba', '10:00', '18:00')
+Go
+
+INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado ) 
+VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'Ximena Prueba'),
+( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987', 'Boris Prueba'),
+( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789', 'Ximena Prueba'),
+( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871', 'Boris Prueba'),
+( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972', 'Ximena Prueba'),
+( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687', 'Boris Prueba'),
+( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25', 'Ximena Prueba'),
+( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789', 'Boris Prueba'),
+( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'Ximena Prueba'),
+( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897', 'Boris Prueba'),
+( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454', 'Ximena Prueba'),
+( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974', 'Boris Prueba'),
+( DATEADD(DAY, 49, GETDATE()), 'Servando Pagliari', 'Montenegro 7941', 'Ximena Prueba'),
+( DATEADD(DAY, 82, GETDATE()), 'Reina Rodriguez', 'Servia 1987', 'Boris Prueba'),
+( DATEADD(DAY, 72, GETDATE()), 'Tomas Bartolomiu', 'Austria 1941', 'Ximena Prueba')
+Go
+
+--select * from Paquetes
+go
+INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
+VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
+( 487878, 'común', 'Caja de zapatos', 800 , 'Juanjo Prueba'),
+( 48788, 'fragil', 'IPad', 500 , 'Juanjo Prueba'),
+( 1254, 'bulto', 'Caja comun', 3000 , 'James Prueba'),
+( 8754, 'común', 'Mochila', 500 , 'Mario Prueba'),
+( 98712, 'fragil', 'TV', 5000 , 'James Prueba'),
+( 54458, 'bulto', 'Caja especial', 8500 , 'Juanjo Prueba'),
+( 54545, 'fragil', 'Parabrisas', 16000 , 'Juanjo Prueba'),
+( 885412, 'común', 'Caja comun', 3000 , 'Mario Prueba'),
+( 85471, 'fragil', 'Parlantes', 2200 , 'Juanjo Prueba'),
+( 66336, 'fragil', 'Auriculares', 300 , 'Juanjo Prueba'),
+( 85214, 'común', 'Jeans', 800 , 'Juanjo Prueba'),
+( 36255, 'fragil', 'Electrodomestico', 3200 , 'James Prueba'),
+( 87456, 'bulto', 'Caja comun', 3000 , 'Juanjo Prueba'),
+( 18744, 'común', 'Calzado', 1200 , 'Mario Prueba'),
+( 84484, 'fragil', 'Lentes Caja', 2000 , 'James Prueba'),
+( 78452, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
+( 23215, 'común', 'Sillas Plegables', 18000 , 'Juanjo Prueba'),
+( 12121, 'fragil', 'Mesa vidrio', 20000 , 'Juanjo Prueba'),
+( 22123, 'fragil', 'Heladera', 20500 , 'Juanjo Prueba'),
+( 36952, 'común', 'Juguetes caja', 3800 , 'James Prueba'),
+( 25321, 'fragil', 'Aticulos iluminacion', 6000 , 'Juanjo Prueba'),
+( 84645, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba'),
+( 231545, 'común', 'Mochila', 500 , 'Juanjo Prueba'),
+( 96325, 'fragil', 'Espejo', 6500 , 'Juanjo Prueba'),
+( 74145, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
+( 23123, 'fragil', 'Cristaleria', 3500 , 'Juanjo Prueba'),
+( 84127, 'común', 'Remeras', 2000 , 'James Prueba'),
+( 96365, 'fragil', 'Apple TV', 600 , 'Juanjo Prueba'),
+( 35241, 'común', 'Championes bebe', 200 , 'Juanjo Prueba'),
+( 85695, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba')
+ 
+
+
+INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
+(45454,1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
+(885412, 4), (66336, 4), (85214, 4),
+(36255, 5), (87456, 5), (18744, 5),
+(84484, 6), (78452, 6),
+(23215, 7), (12121, 7), (22123, 7),
+(36952, 8), (25321,8), (84645,8),
+(231545, 9), (96325, 9), (74145, 9),
+(23123, 10), (84127, 10), 
+(96365, 11), (35241, 11), 
+(85695, 12)
+
+Go
 ---------- Usuarios de SQL -------------------------
 
 ------------ NEW DEV -----------------
@@ -110,7 +193,6 @@ Begin
 	Declare @VarSentencia varchar (200)
 
 	-- Multiples acciones - TRN
-	Begin TRAN
 
 		--primero creo el usuario de logueo
 		SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
@@ -118,7 +200,6 @@ Begin
 
 		if (@@ERROR <> 0 )
 		begin 
-			Rollback TRAN
 			return -2
 		end
 
@@ -128,7 +209,6 @@ Begin
 
 		if (@@ERROR <> 0 )
 		begin 
-			Rollback TRAN
 			return -3
 		end
 
@@ -138,12 +218,53 @@ Begin
 
 		if (@@ERROR <> 0 )
 		BEGIN 
-			Rollback TRAN
 			return -4
 		END
- COMMIT TRAN
+
+		Set @VarSentencia = 'GRANT ALTER ANY LOGIN TO [' +@NombreUsuario + ']'
+		exec (@VarSentencia)
+
+		if (@@ERROR <> 0 )
+		BEGIN 
+			return -5
+		END
+
+		return 1
+ 
 END
 GO
+
+
+CREATE PROCEDURE CambioContraseña @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
+Begin
+	
+		If Not Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario )
+		return -1
+
+		Declare @VarSentencia varchar (200)
+
+
+			Set @VarSentencia = 'ALTER LOGIN ['+ @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME(@Contrasenia,'''')
+			Exec (@VarSentencia)
+
+			If (@@ERROR = 0)
+			return -2
+			
+			
+			if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+			return -3
+			else
+			
+				Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario
+			
+			If (@@ERROR = 0)
+			return -3 
+
+
+			return 1
+			
+End
+Go
 
 -------------------------------------
 
@@ -221,9 +342,7 @@ Begin
 		Begin Try
 			Begin Tran
 				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
-				Declare @IdUsuario as varchar(50)
-				Set @IdUsuario = (SELECT @@IDENTITY)
-				Insert into UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) values (@IdUsuario, @Telefono, @Direccion, @Email)
+				Insert into UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) values (@NombreUsuario, @Telefono, @Direccion, @Email)
 			Commit Tran 
 			Return 1
 		End Try
@@ -248,8 +367,8 @@ Begin
 	Else
 		Begin try
 			Begin Tran
-				Delete Usuarios Where NombreUsuario = @NombreUsuario
 				Delete UsuariosEmpresa Where NombreUsuario = @NombreUsuario
+				Delete Usuarios Where NombreUsuario =  @NombreUsuario
 			Commit Tran 
 			Return 1
 		End Try
@@ -258,7 +377,7 @@ Begin
 			Return -2
 		End Catch
 End
-go 
+Go 
 
 Create Procedure UsuariosEmpresaModificar @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
 Begin
@@ -282,13 +401,13 @@ Go
 
 Create Procedure UsuariosEmpresaBuscar @NombreUsuario varchar(50) AS 
 Begin 
- Select * from Usuarios u inner join UsuariosEmpresa ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1
+ Select u.NombreUsuario, u.Contrasenia, u.Nombre, ue.Telefono, ue.Direccion, ue.Email  from Usuarios u inner join UsuariosEmpresa ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1
 End
 Go
 
 Create Procedure UsuariosEmpresaBuscarTodos @NombreUsuario varchar(50) AS 
 Begin 
- Select * from Usuarios u inner join UsuariosEmpresa ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario
+ Select u.NombreUsuario, u.Contrasenia, u.Nombre, ue.Telefono, ue.Direccion, ue.Email  from Usuarios u inner join UsuariosEmpresa ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario
 End
 Go
 
@@ -316,9 +435,7 @@ Begin
 		Begin Try
 			Begin Tran
 				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
-				Declare @IdUsuario as varchar(50)
-				Set @IdUsuario = (SELECT @@IDENTITY)
-				Insert into UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) values (@IdUsuario, @HoraInicio, @HoraFin)
+				Insert into UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) values (@NombreUsuario, @HoraInicio, @HoraFin)
 			Commit Tran 
 			Return 1
 		End Try
@@ -343,8 +460,8 @@ Begin
 	Else
 		Begin try
 			Begin Tran
-				Delete Usuarios Where NombreUsuario = @NombreUsuario
 				Delete UsuariosEmpleado Where NombreUsuario = @NombreUsuario
+				Delete Usuarios Where NombreUsuario = @NombreUsuario
 			Commit Tran 
 			Return 1
 		End Try
@@ -376,13 +493,13 @@ Go
 
 Create Procedure UsuariosEmpleadoBuscar @NombreUsuario varchar(50) AS 
 Begin 
- Select * from Usuarios u inner join UsuariosEmpleado ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1
+ Select  u.NombreUsuario, u.Contrasenia, u.Nombre, ue.HoraInicio, ue.HoraFin from Usuarios u inner join UsuariosEmpleado ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1
 End
 Go
 
 Create Procedure UsuariosEmpleadoBuscarTodos @NombreUsuario varchar(50) AS 
 Begin 
- Select * from Usuarios u inner join UsuariosEmpleado ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario 
+ Select u.NombreUsuario, u.Contrasenia, u.Nombre, ue.HoraInicio, ue.HoraFin from Usuarios u inner join UsuariosEmpleado ue on u.NombreUsuario = ue.NombreUsuario where u.NombreUsuario = @NombreUsuario 
 End
 Go
 
@@ -390,7 +507,7 @@ Go
 
 Create Procedure UsuariosLogueo @NombreUsuario varchar(50), @Contrasenia varchar(6) AS 
 Begin 
- Select * from Usuarios where NombreUsuario = @NombreUsuario AND  Contrasenia = @Contrasenia
+ Select * from Usuarios where NombreUsuario = @NombreUsuario AND  Contrasenia = @Contrasenia 
 End
 Go
 
@@ -408,7 +525,7 @@ Insert into SolicitudesDeEntrega (FechaDeEntrega, NombreDestinatario, DireccionD
 End
 go
 
-Create Procedure SolicitudesDeEntregaModificarEstado @EstadoSolicitud varchar(20), @NumeroInterno int AS
+Create Procedure SolicitudesDeEntregaModificarEstado  @NumeroInterno int AS
 Begin
 	If (Not Exists (Select * From SolicitudesDeEntrega Where NumeroInterno = @NumeroInterno))
 	return -1 
@@ -445,14 +562,13 @@ Go
 
 
 
-Create Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario int AS
+Alter Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario varchar(50) AS
 Begin
-	 Select * From SolicitudesDeEntrega as se INNER JOIN SolicitudPaquete as sp on se.NumeroInterno = sp.NumeroInterno 
+	 Select se.NumeroInterno as 'Numero Interno', se.FechaDeEntrega as 'Fecha de Entrega', se.NombreDestinatario as 'Nombre Destinatario', se.DireccionDestinatario as 'Direcciòn Destinatario', se.EstadoSolicitud as 'Estado' From SolicitudesDeEntrega as se INNER JOIN SolicitudPaquete as sp on se.NumeroInterno = sp.NumeroInterno 
 	 INNER JOIN Paquetes as p on sp.CodigodeBarras = p.CodigodeBarras 
 	 Where p.NombreUsuarioEmpresa = @NombreUsuario
 End
 go
-
 
 --------- Paquetes ------------
 
@@ -487,6 +603,7 @@ Begin
 	Select * from Paquetes as p Where p.CodigodeBarras NOT IN ( Select CodigodeBarras From SolicitudPaquete ) 
 End
 Go
+
 
 Create Procedure PaquetesListadoPorSolicitud @NumeroInterno int As
 Begin
