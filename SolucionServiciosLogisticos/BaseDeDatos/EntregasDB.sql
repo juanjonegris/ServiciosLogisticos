@@ -27,7 +27,7 @@ GO
 CREATE USER [IIS APPPOOL\DefaultAppPool] FOR LOGIN [IIS APPPOOL\DefaultAppPool]
 GO
 
-GRANT Execute to [IIS APPPOOL\DefaultAppPool]
+GRANT Execute ON OBJECT::Entregas.UsuariosLogueo to [IIS APPPOOL\DefaultAppPool]
 go
 
 --creacion de tablas
@@ -43,17 +43,15 @@ CREATE TABLE Usuarios (
 )
 go
 
-
 CREATE TABLE UsuariosEmpresa (
 	NombreUsuario varchar(50) not null,
 	Telefono varchar(9) not null,
 	Direccion varchar(50) not null,
-	Email varchar(50) not null,
+	Email varchar(50) not null LIKE '%_@__%.__%',
 	PRIMARY KEY (NombreUsuario),
 	FOREIGN KEY (NombreUsuario) REFERENCES Usuarios(NombreUsuario)
 )
 go 
-
 
 CREATE TABLE UsuariosEmpleado (
 	NombreUsuario varchar(50) not null,
@@ -65,24 +63,22 @@ CREATE TABLE UsuariosEmpleado (
 )
 go
 
-
 CREATE TABLE SolicitudesDeEntrega (
 	NumeroInterno int not null Identity (1,1) Primary Key,
 	FechaDeEntrega date not null check (FechaDeEntrega >= GETDATE()),
 	NombreDestinatario varchar(50) not null,
 	DireccionDestinatario varchar(50) not null,
-	EstadoSolicitud varchar(20) not null check( EstadoSolicitud = 'En Depósito' OR EstadoSolicitud = 'En Camino' OR EstadoSolicitud = 'Entregado' ) Default ('En Depósito'),
+	EstadoSolicitud varchar(20) not null Default 'En Depósito' check( EstadoSolicitud IN ('En Depósito', 'En Camino', 'Entregado' ),
 	NombreUsuarioEmpleado varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpleado) REFERENCES UsuariosEmpleado(NombreUsuario)
 )
 go
 
-
 CREATE TABLE Paquetes (
 	CodigodeBarras int not null Primary Key,
-	Tipo varchar(10) not null check( Tipo = 'fragil' OR Tipo = 'común' OR tipo = 'bulto'),
+	Tipo varchar(10) not null check( Tipo IN ('fragil', 'común', 'bulto'),
 	Descripcion varchar(MAX) not null,
-	Peso decimal not null,
+	Peso decimal not null check( Peso >= 0 ),
 	NombreUsuarioEmpresa varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpresa) REFERENCES UsuariosEmpresa(NombreUsuario)
 )
@@ -106,7 +102,8 @@ INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'a
 Go
 
 INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
-	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
+	('Mario 
+	Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
 Go	
 
 INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
@@ -179,58 +176,52 @@ INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES
 (23123, 10), (84127, 10), 
 (96365, 11), (35241, 11), 
 (85695, 12)
-
 Go
 ---------- Usuarios de SQL -------------------------
 
 ------------ NEW DEV -----------------
 CREATE PROCEDURE NuevoUsuario @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
 Begin
-
-	If  Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario )
-	return -1
-
 	Declare @VarSentencia varchar (200)
 
+	If  Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario AND type='U' )
+	return -1
+
 	-- Multiples acciones - TRN
-
+		Begin TRAN
 		--primero creo el usuario de logueo
-		SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
-		EXEC(@VarSentencia)
+			SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
+			EXEC(@VarSentencia)
 
-		if (@@ERROR <> 0 )
-		begin 
-			return -2
-		end
+			if (@@ERROR <> 0 )
+			Begin 
+				Rollback TRAN
+				return -2
+			End
 
-		--segundo creo usuari db
-		Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
-		exec (@VarSentencia)
+			--segundo creo usuari db
+			Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
+			exec (@VarSentencia)
 
-		if (@@ERROR <> 0 )
-		begin 
-			return -3
-		end
+			if (@@ERROR <> 0 )
+			begin 
+				Rollback TRAN
+				return -3
+			end
 
 				--segundo creo usuari db con permisos
-		Set @VarSentencia = 'GRANT EXECUTE TO [' +@NombreUsuario + ']'
-		exec (@VarSentencia)
+				Set @VarSentencia = 'GRANT EXECUTE TO [' +@NombreUsuario + ']'
+				exec (@VarSentencia)
+				if (@@ERROR <> 0 )
+				BEGIN 
+					Rollback TRAN
+					return -4
+				END
 
-		if (@@ERROR <> 0 )
-		BEGIN 
-			return -4
-		END
-
-		Set @VarSentencia = 'GRANT ALTER ANY LOGIN TO [' +@NombreUsuario + ']'
-		exec (@VarSentencia)
-
-		if (@@ERROR <> 0 )
-		BEGIN 
-			return -5
-		END
-
-		return 1
- 
+		Commit TRAN
+		
+		--asigno rol de servidor al usuario recien creado
+		Exec sp_addsrvrolemember @loginame=@nomU, @rolename='securityAdmin'
 END
 GO
 
@@ -238,85 +229,38 @@ GO
 CREATE PROCEDURE CambioContraseña @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
 Begin
 	
-		If Not Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario )
+		Declare @VarSentencia varchar (200)
+		If Not Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario AND type='U')
 		return -1
 
-		Declare @VarSentencia varchar (200)
+		if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+			return -2
+		
 
-
+		Begin TRAN
 			Set @VarSentencia = 'ALTER LOGIN ['+ @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME(@Contrasenia,'''')
 			Exec (@VarSentencia)
 
-			If (@@ERROR = 0)
-			return -2
+			If (@@ERROR <> 0)
+			Begin
+				Rollback TRAN
+				return -3
+			End
 			
 			
-			if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
-			return -3
-			else
-			
-				Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario
-			
-			If (@@ERROR = 0)
-			return -3 
-
-
-			return 1
-			
+			Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario			
+			If (@@ERROR <> 0)
+			Begin
+				Rollback TRAN
+				return -4
+			End
+		
+		Commit TRAN	
 End
 Go
 
 -------------------------------------
 
-Create Procedure NuevoUsuarioSql @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
-Begin
-
-	Declare @VarSentencia varchar(200)
-	
-		--Primero creo el usuario de logueo
-			
-		Set @VarSentencia = 'CREATE LOGIN ['+ @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME(@Contrasenia,'''')
-		Exec (@VarSentencia)
-
-		If (@@ERROR = 0)
-		return 1
-		else 
-		return -1
-			
-End
-go
-
-Create Procedure NuevoUsuarioBD @NombreUsuario varchar(50)  AS
-Begin
-		--primero creo el usuario
-		Declare @VarSentencia varchar (200)
-		Set @VarSentencia = 'CREATE USER ['+ @NombreUsuario + '] FROM LOGIN [' + @NombreUsuario + ']'
-		Exec (@VarSentencia)
-
-		If (@@ERROR = 0)
-		return 1
-		else 
-		return -1	
-
-End
-go
-
-
-Create Procedure AgregarPermisoUsuarioBD @NombreUsuario varchar(50) AS
-Begin
-	
-	Declare @VarSentencia varchar (200)
-
-		Set @VarSentencia = 'GRANT Execute TO '+ @NombreUsuario
-
-		Exec (@VarSentencia)
-
-		If (@@ERROR = 0)
-		return 1
-		else 
-		return -1
-End
-go
 
 ---------- UsuariosEmpresa -------------------------
 
@@ -379,7 +323,7 @@ Begin
 End
 Go 
 
-Create Procedure UsuariosEmpresaModificar @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
+Create Procedure UsuariosEmpresaModificar @NombreUsuario varchar(50), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
 Begin
 	if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
 		return -1
@@ -472,7 +416,7 @@ Begin
 End
 go 
 
-Create Procedure UsuariosEmpleadoModificar  @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @HoraInicio time, @HoraFin time As
+Create Procedure UsuariosEmpleadoModificar  @NombreUsuario varchar(50), @Nombre varchar(70), @HoraInicio time, @HoraFin time As
 Begin
 	if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
 		return -1

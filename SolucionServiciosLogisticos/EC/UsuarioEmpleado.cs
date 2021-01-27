@@ -11,11 +11,11 @@ namespace EC
     [DataContract]
     public class UsuarioEmpleado : Usuario
     {
-        private DateTime _horaInicio;
-        private DateTime _horaFin;
+        private TimeSpan _horaInicio;
+        private TimeSpan _horaFin;
 
         [DataMember]
-        public DateTime HoraInicio
+        public TimeSpan HoraInicio
         {
             get { return _horaInicio; }
 
@@ -23,14 +23,14 @@ namespace EC
         }
 
         [DataMember]
-        public DateTime HoraFin
+        public TimeSpan HoraFin
         {
             get { return _horaFin; }
 
             set { _horaFin = value; }
         }
 
-        public UsuarioEmpleado(DateTime horaInicio, DateTime horaFin, string nombreUsuario, string contrasenia, string nombre)
+        public UsuarioEmpleado(TimeSpan horaInicio, TimeSpan horaFin, string nombreUsuario, string contrasenia, string nombre)
             : base ( nombreUsuario, contrasenia, nombre )
         {
             this.HoraInicio = horaInicio;

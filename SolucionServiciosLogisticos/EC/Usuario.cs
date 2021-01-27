@@ -43,7 +43,7 @@ namespace EC
             {
                 if (value.Trim().Length != 6 )
                     throw new Exception(" La contraseña debe contener caracteres");
-                if ((!Regex.IsMatch(value.ToLower(), "[a-zA-Z]{3}[0-9]{2}[^a-zA-Z0-9]{1}")))
+                if ((!Regex.IsMatch(value.ToLower(), "[a-zA-Z]{3}[0-9]{2}[$&+,:;=?@#|''<>.^*()%!-]{1}")))
                         throw new Exception(" Verifique el formato del su contraseña debe ser: 3 letras,2 números y 1 Simbolo.");
                 _contrasena = value;
             }

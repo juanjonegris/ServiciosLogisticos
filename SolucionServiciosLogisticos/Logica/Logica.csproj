@@ -40,6 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\LogicaPaquete.cs" />
+    <Compile Include="Clases\LogicaSolicitudEntrega.cs" />
+    <Compile Include="Clases\LogicaUsuario.cs" />
+    <Compile Include="Fabrica.cs" />
+    <Compile Include="Interfaces\ILogicaPaquete.cs" />
+    <Compile Include="Interfaces\ILogicaSolicitudEntrega.cs" />
+    <Compile Include="Interfaces\ILogicaUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
