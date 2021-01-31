@@ -27,74 +27,39 @@ namespace Persistencia.Clases
         #endregion
 
 
-        public void AgregarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        public void AgregarUsuarioEmpleado(UsuarioEmpleado UE, UsuarioEmpleado UELogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
 
-            // Alta Usuario Sql
-            SqlCommand oComando = new SqlCommand("NuevoUsuario", oConexion);
+            SqlCommand oComando = new SqlCommand("UsuariosEmpleadoAlta", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
+            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
             SqlParameter _contra = new SqlParameter("@Contrasenia", UE.Contrasenia);
+            SqlParameter _hini = new SqlParameter("@HoraInicio", UE.HoraInicio);
+            SqlParameter _hfin = new SqlParameter("@HoraFin", UE.HoraFin);
+
             SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
             _Retorno.Direction = ParameterDirection.ReturnValue;
 
             oComando.Parameters.Add(_nomUsu);
             oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_nombre);
+            oComando.Parameters.Add(_hini);
+            oComando.Parameters.Add(_hfin);
             oComando.Parameters.Add(_Retorno);
 
+            
             try
             {
                 oConexion.Open();
-
                 oComando.ExecuteNonQuery();
 
                 int returned_value = Convert.ToInt32(_Retorno.Value);
 
                 if (returned_value == -1)
-                    throw new Exception("Usuario existente");
-                else if (returned_value == -2)
-                    throw new Exception("No se puede Crear usuario Login");
-                else if (returned_value == -3)
-                    throw new Exception("No se puede crear usuario BD");
-                else if (returned_value == -4)
-                    throw new Exception("Problema para asignar permisos al usuario");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-
-            SqlCommand oComando2 = new SqlCommand("UsuariosEmpleadoAlta", oConexion);
-            oComando2.CommandType = CommandType.StoredProcedure;
-
-            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
-            SqlParameter _hini = new SqlParameter("@HoraInicio", UE.HoraInicio);
-            SqlParameter _hfin = new SqlParameter("@HoraFin", UE.HoraFin);
-
-            SqlParameter _Retorno2 = new SqlParameter("@Retorno", SqlDbType.Int);
-            _Retorno2.Direction = ParameterDirection.ReturnValue;
-
-            oComando2.Parameters.Add(_nomUsu);
-            oComando2.Parameters.Add(_contra);
-            oComando2.Parameters.Add(_nombre);
-            oComando2.Parameters.Add(_hini);
-            oComando2.Parameters.Add(_hfin);
-            oComando.Parameters.Add(_Retorno2);
-
-
-            //ACA
-            try
-            {
-                oConexion.Open();
-                oComando2.ExecuteNonQuery();
-
-                int returned_value = Convert.ToInt32(_Retorno2.Value);
-
-                if (returned_value == -1)
-                    throw new Exception("El nombre de usuario ya se encuentra registrado");
+                    throw new Exception("Ya existe un usuario registrado con ese Nombre de Usuario");
                 if (returned_value == -2)
                     throw new Exception("Ha habido un error al intentar dar de alta el usuario");
 
@@ -110,7 +75,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public void EliminarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        public void EliminarUsuarioEmpleado(UsuarioEmpleado UE, UsuarioEmpleado UELogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
 
@@ -146,7 +111,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public void ModificarUsuarioEmpleado(UsuarioEmpleado UE, Usuario UELogueado)
+        public void ModificarUsuarioEmpleado(UsuarioEmpleado UE, UsuarioEmpleado UELogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
 
@@ -155,7 +120,6 @@ namespace Persistencia.Clases
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
-            SqlParameter _contra = new SqlParameter("@Contrasenia", UE.Contrasenia);
             SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
             SqlParameter _horaini = new SqlParameter("@HoraInicio", UE.HoraInicio);
             SqlParameter _horafin = new SqlParameter("@HoraFin", UE.HoraFin);
@@ -163,7 +127,6 @@ namespace Persistencia.Clases
             _Retorno.Direction = ParameterDirection.ReturnValue;
 
             oComando.Parameters.Add(_nomUsu);
-            oComando.Parameters.Add(_contra);
             oComando.Parameters.Add(_nombre);
             oComando.Parameters.Add(_horaini);
             oComando.Parameters.Add(_horafin);
@@ -192,7 +155,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public UsuarioEmpleado BuscarUsuarioEmpleado(string pNombreUsuario, Usuario UELogueado)
+        public UsuarioEmpleado BuscarUsuarioEmpleado(string pNombreUsuario, UsuarioEmpleado UELogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
 
@@ -219,8 +182,8 @@ namespace Persistencia.Clases
                     string nomUsu = pNombreUsuario;
                     string contra = dr["Contrasenia"].ToString();
                     string nombre = dr["Nombre"].ToString();
-                    DateTime horaini = (DateTime)dr["HoraInicio"];
-                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    string horaini =dr["HoraInicio"].ToString();
+                    string horafin = dr["HoraFin"].ToString();
                     usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
                     dr.Close();
                 }
@@ -264,8 +227,8 @@ namespace Persistencia.Clases
                     string nomUsu = pNombreUsuario;
                     string contra = dr["Contrasenia"].ToString();
                     string nombre = dr["Nombre"].ToString();
-                    DateTime horaini = (DateTime)dr["HoraInicio"];
-                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    string horaini = dr["HoraInicio"].ToString();
+                    string horafin = dr["HoraFin"].ToString();
                     usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
                     dr.Close();
                 }
@@ -282,11 +245,11 @@ namespace Persistencia.Clases
             return usuarioEmpleado;
         }
 
-        public UsuarioEmpleado LogueoUsuario(string pNombreUsuario, string pContrasenia)
+        public UsuarioEmpleado LogueoUsuarioEmpleado(string pNombreUsuario, string pContrasenia)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
 
-            SqlCommand oComando = new SqlCommand("UsuariosLogueo", oConexion);
+            SqlCommand oComando = new SqlCommand("LogueoUsuarioEmpleado", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", pNombreUsuario);
@@ -311,8 +274,8 @@ namespace Persistencia.Clases
                     string nomUsu = pNombreUsuario;
                     string contra = dr["Contrasenia"].ToString();
                     string nombre = dr["Nombre"].ToString();
-                    DateTime horaini = (DateTime)dr["HoraInicio"];
-                    DateTime horafin = (DateTime)dr["HoraFin"];
+                    string horaini = dr["HoraInicio"].ToString();
+                    string horafin = dr["HoraFin"].ToString();
                     usuarioEmpleado = new UsuarioEmpleado(horaini, horafin, nomUsu, contra, nombre);
                     dr.Close();
                 }
@@ -330,6 +293,5 @@ namespace Persistencia.Clases
         }
 
     }
-
 
 }

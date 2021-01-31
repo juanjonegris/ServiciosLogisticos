@@ -9,11 +9,11 @@ namespace Persistencia.Interfaces
 {
     public interface IPersistenciaUsuarioEmpresa
     {
-        void AgregarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado);
-        void EliminarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado);
-        void ModificarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado);
-        UsuarioEmpresa BuscarUsuarioEmpresa(string pNombreUsuario, Usuario ULogueado);
-        UsuarioEmpresa LogueoUsuario(string pNombreUsuario, string pContrasenia);
+        void AgregarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado);
+        void EliminarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado);
+        void ModificarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado);
+        UsuarioEmpresa BuscarUsuarioEmpresa(string pNombreUsuario, UsuarioEmpleado ULogueado);
+        UsuarioEmpresa LogueoUsuarioEmpresa(string pNombreUsuario, string pContrasenia);
 
     }
 }

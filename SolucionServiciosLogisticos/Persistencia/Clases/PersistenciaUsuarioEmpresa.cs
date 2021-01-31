@@ -26,72 +26,40 @@ namespace Persistencia.Clases
         }
         #endregion
 
-        public void AgregarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado)
+        public void AgregarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UEMLogueado));
 
+
+
             // Alta Usuario Sql
-            SqlCommand oComando = new SqlCommand("NuevoUsuario", oConexion);
+            SqlCommand oComando = new SqlCommand("UsuariosEmpresaAlta", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UEM.NombreUsuario);
-            SqlParameter _contra = new SqlParameter("@Contrasenia", UEM.Contrasenia);
-            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
-            _Retorno.Direction = ParameterDirection.ReturnValue;
-
-            oComando.Parameters.Add(_nomUsu);
-            oComando.Parameters.Add(_contra);
-            oComando.Parameters.Add(_Retorno);
-
-            try
-            {
-                oConexion.Open();
-
-                oComando.ExecuteNonQuery();
-
-                int returned_value = Convert.ToInt32(_Retorno.Value);
-
-                if (returned_value == -1)
-                    throw new Exception("Usuario existente");
-                else if (returned_value == -2)
-                    throw new Exception("No se puede Crear usuario Login");
-                else if (returned_value == -3)
-                    throw new Exception("No se puede crear usuario BD");
-                else if (returned_value == -4)
-                    throw new Exception("Problema para asignar permisos al usuario");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            } 
-
-
-            // Alta Usuario Sql
-            SqlCommand oComando2 = new SqlCommand("UsuariosEmpresaAlta", oConexion);
-            oComando2.CommandType = CommandType.StoredProcedure;
-
+            SqlParameter _contra = new SqlParameter("@Contrasenia", UEM.NombreUsuario);
             SqlParameter _nombre = new SqlParameter("@Nombre", UEM.Nombre);
             SqlParameter _telefono = new SqlParameter("@Telefono", UEM.Telefono);
             SqlParameter _direccion = new SqlParameter("@Direccion", UEM.Direccion);
             SqlParameter _email = new SqlParameter("@Email", UEM.Email);
 
-            SqlParameter _Retorno2 = new SqlParameter("@Retorno", SqlDbType.Int);
-            _Retorno2.Direction = ParameterDirection.ReturnValue;
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
 
-            oComando2.Parameters.Add(_nomUsu);
-            oComando2.Parameters.Add(_contra);
-            oComando2.Parameters.Add(_nombre);
-            oComando2.Parameters.Add(_telefono);
-            oComando2.Parameters.Add(_direccion);
-            oComando2.Parameters.Add(_email);
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_nombre);
+            oComando.Parameters.Add(_telefono);
+            oComando.Parameters.Add(_direccion);
+            oComando.Parameters.Add(_email);
             oComando.Parameters.Add(_Retorno);
 
             try
             {
                 oConexion.Open();
-                oComando2.ExecuteNonQuery();
+                oComando.ExecuteNonQuery();
 
-                int returned_value = Convert.ToInt32(_Retorno2.Value);
+                int returned_value = Convert.ToInt32(_Retorno.Value);
 
                 if (returned_value == -1)
                     throw new Exception("El nombre de usuario ya se encuentra registrado");
@@ -110,7 +78,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public void EliminarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado)
+        public void EliminarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UEMLogueado));
 
@@ -146,7 +114,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public void ModificarUsuarioEmpresa(UsuarioEmpresa UEM, Usuario UEMLogueado)
+        public void ModificarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UEMLogueado));
 
@@ -155,7 +123,6 @@ namespace Persistencia.Clases
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UEM.NombreUsuario);
-            SqlParameter _contra = new SqlParameter("@Contrasenia", UEM.Contrasenia);
             SqlParameter _nombre = new SqlParameter("@Nombre", UEM.Nombre);
             SqlParameter _telefono = new SqlParameter("@Telefono", UEM.Telefono);
             SqlParameter _direcc = new SqlParameter("@Direccion", UEM.Direccion);
@@ -164,7 +131,6 @@ namespace Persistencia.Clases
             _Retorno.Direction = ParameterDirection.ReturnValue;
 
             oComando.Parameters.Add(_nomUsu);
-            oComando.Parameters.Add(_contra);
             oComando.Parameters.Add(_nombre);
             oComando.Parameters.Add(_telefono);
             oComando.Parameters.Add(_direcc);
@@ -191,10 +157,10 @@ namespace Persistencia.Clases
             finally
             {
                 oConexion.Close();
-            } 
+            }
         }
 
-        public UsuarioEmpresa BuscarUsuarioEmpresa(string pNombreUsuario, Usuario ULogueado)
+        public UsuarioEmpresa BuscarUsuarioEmpresa(string pNombreUsuario, UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -287,11 +253,11 @@ namespace Persistencia.Clases
             return usuarioEmpresa;
         }
 
-        public UsuarioEmpresa LogueoUsuario(string pNombreUsuario, string pContrasenia)
+        public UsuarioEmpresa LogueoUsuarioEmpresa(string pNombreUsuario, string pContrasenia)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
 
-            SqlCommand oComando = new SqlCommand("UsuariosLogueo", oConexion);
+            SqlCommand oComando = new SqlCommand("LogueoUsuarioEmpresa", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", pNombreUsuario);
@@ -335,6 +301,47 @@ namespace Persistencia.Clases
             return usuarioEmpresa;
         }
 
+        public void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado)
+        {
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
 
+            SqlCommand oComando = new SqlCommand("CambioContrasena", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", ULogueado.NombreUsuario);
+            SqlParameter _contra = new SqlParameter("@Contrasenia", pNuevaContrasenia);
+            SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
+            _Retorno.Direction = ParameterDirection.ReturnValue;
+
+            oComando.Parameters.Add(_nomUsu);
+            oComando.Parameters.Add(_contra);
+            oComando.Parameters.Add(_Retorno);
+            
+
+            try
+            {
+                oConexion.Open();
+                oComando.ExecuteNonQuery();
+
+                int returned_value = Convert.ToInt32(_Retorno.Value);
+
+                if (returned_value == -1)
+                    throw new Exception("No existe el usuario en la Base de Datos");
+                if (returned_value == -2)
+                    throw new Exception("No existe el usuario cuya contrseña intenta modificar");
+                if (returned_value == -3)
+                    throw new Exception("Ha ocurrido un error al intentar modificar la contraseña");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+
+        }
     }
-    }
+}

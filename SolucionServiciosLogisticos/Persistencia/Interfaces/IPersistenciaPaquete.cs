@@ -10,9 +10,9 @@ namespace Persistencia.Interfaces
 {
     public interface IPersistenciaPaquete
     {
-        void AgregarPaquete(Paquete P, Usuario ULogueado);
-        Paquete BuscarPaquete(int pCodigoBarras, Usuario ULogueado);
-        List<Paquete> ListarPaquetesSinSolicitud(Usuario ULogueado);
-        List<Paquete> ListarPaquetesEnSolicitud(int numeroInterno, Usuario ULogueado);
+        void AgregarPaquete(Paquete P, UsuarioEmpleado ULogueado);
+        Paquete BuscarPaquete(int pCodigoBarras, UsuarioEmpleado ULogueado);
+        List<Paquete> ListarPaquetesSinSolicitud(UsuarioEmpleado ULogueado);
+
     }
 }

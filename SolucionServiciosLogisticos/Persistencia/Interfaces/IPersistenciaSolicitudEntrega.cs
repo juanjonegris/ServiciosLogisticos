@@ -9,10 +9,10 @@ namespace Persistencia.Interfaces
 {
     public interface IPersistenciaSolicitudEntrega
     {
-        void AgregarSolicitudEntrega(SolicitudEntrega S, Usuario ULogueado);
-        SolicitudEntrega BuscarSolicitudEntrega(int pNumeroInterno, Usuario ULogueado);
-        void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, Usuario ULogueado);
-        List<SolicitudEntrega> ListarSolicitudEntrega(Usuario ULogueado);
-        List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(Usuario ULogueado);
+        void AgregarSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado);
+        SolicitudEntrega BuscarSolicitudEntrega(int pNumeroInterno, UsuarioEmpleado ULogueado);
+        void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado);
+        List<SolicitudEntrega> ListarSolicitudEntrega();
+        List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado);
     }
 }

@@ -26,7 +26,7 @@ namespace Persistencia.Clases
         }
         #endregion
 
-        public void AgregarPaquete(Paquete P, Usuario ULogueado)
+        public void AgregarPaquete(Paquete P, UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -71,7 +71,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public Paquete BuscarPaquete(int pCodigoBarras, Usuario ULogueado)
+        public Paquete BuscarPaquete(int pCodigoBarras, UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -114,7 +114,7 @@ namespace Persistencia.Clases
             return paquete;
         }
 
-        public List<Paquete> ListarPaquetesSinSolicitud(Usuario ULogueado)
+        public List<Paquete> ListarPaquetesSinSolicitud(UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -160,55 +160,6 @@ namespace Persistencia.Clases
             return listPaqueteSinSol;
         }
 
-        public List<Paquete> ListarPaquetesEnSolicitud(int pNnumeroInterno, Usuario ULogueado)
-        {
-            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
-
-            SqlCommand oComando = new SqlCommand("PaquetesListadoPorSolicitud", oConexion);
-            oComando.CommandType = CommandType.StoredProcedure;
-            SqlParameter _numInt = new SqlParameter("@NumeroInterno", pNnumeroInterno);
-            
-            oComando.Parameters.Add(_numInt);
-
-            List<Paquete> listPaquetePorSol = new List<Paquete>();
-            int codBar;
-            string tipo;
-            string descripcion;
-            double peso;
-            string nombreUsuarioEmp;
-            UsuarioEmpresa empresa;
-
-            try
-            {
-                oConexion.Open();
-                SqlDataReader dr = oComando.ExecuteReader();
-
-                if (dr.HasRows)
-                {
-                    while (dr.Read())
-                    {
-                        codBar = (int)dr["CodigodeBarras"];
-                        tipo = dr["Tipo"].ToString();
-                        descripcion = dr["Descripcion"].ToString();
-                        peso = (double)dr["Peso"];
-                        nombreUsuarioEmp = dr["NombreUsuarioEmpresa"].ToString();
-                        empresa = PersistenciaUsuarioEmpresa.GetInstancia().BuscarUsuarioEmpresaTodos(nombreUsuarioEmp, ULogueado);
-                        Paquete paquete = new Paquete(codBar, tipo, descripcion, peso, empresa);
-                        listPaquetePorSol.Add(paquete);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                oConexion.Close();
-            }
-            return listPaquetePorSol;
-        }
-
+        
     }
 }

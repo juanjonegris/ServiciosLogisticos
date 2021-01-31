@@ -1,4 +1,4 @@
-USE master
+SE master
 go
 
 
@@ -13,31 +13,14 @@ go
 CREATE DATABASE Entregas
 go
 
---creacion de usuarios
-
-USE master
-GO
-
-CREATE LOGIN [IIS APPPOOL\DefaultAppPool] FROM WINDOWS 
-GO
-
-USE Entregas
-GO
-
-CREATE USER [IIS APPPOOL\DefaultAppPool] FOR LOGIN [IIS APPPOOL\DefaultAppPool]
-GO
-
-GRANT Execute ON OBJECT::Entregas.UsuariosLogueo to [IIS APPPOOL\DefaultAppPool]
-go
-
---creacion de tablas
+-- Creacion de tablas
 
 USE Entregas
 go
 
 CREATE TABLE Usuarios (
 	NombreUsuario varchar(50) not null Primary Key, 
-	Contrasenia varchar(6) not null check(len(Contrasenia ) = 6 AND Contrasenia like '[a-zA-Z][a-zA-Z][a-zA-Z][0-9][0-9][$&+,:;=?@#|''<>.^*()%!-]'), 
+	Contrasenia varchar(6) not null check(len(Contrasenia ) = 6 AND Contrasenia like '[a-zA-Z][a-zA-Z][a-zA-Z][0-9][0-9][^a-zA-Z0-9]'), 
 	Nombre varchar(70) not null,
 	Activo bit not null Default (1)
 )
@@ -47,7 +30,7 @@ CREATE TABLE UsuariosEmpresa (
 	NombreUsuario varchar(50) not null,
 	Telefono varchar(9) not null,
 	Direccion varchar(50) not null,
-	Email varchar(50) not null LIKE '%_@__%.__%',
+	Email varchar(50) not null check ( Email LIKE '%_@__%.__%'),
 	PRIMARY KEY (NombreUsuario),
 	FOREIGN KEY (NombreUsuario) REFERENCES Usuarios(NombreUsuario)
 )
@@ -68,7 +51,7 @@ CREATE TABLE SolicitudesDeEntrega (
 	FechaDeEntrega date not null check (FechaDeEntrega >= GETDATE()),
 	NombreDestinatario varchar(50) not null,
 	DireccionDestinatario varchar(50) not null,
-	EstadoSolicitud varchar(20) not null Default 'En Depósito' check( EstadoSolicitud IN ('En Depósito', 'En Camino', 'Entregado' ),
+	EstadoSolicitud varchar(20) not null Default 'En Depósito' check( EstadoSolicitud IN ('En Depósito', 'En Camino', 'Entregado' )),
 	NombreUsuarioEmpleado varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpleado) REFERENCES UsuariosEmpleado(NombreUsuario)
 )
@@ -76,13 +59,13 @@ go
 
 CREATE TABLE Paquetes (
 	CodigodeBarras int not null Primary Key,
-	Tipo varchar(10) not null check( Tipo IN ('fragil', 'común', 'bulto'),
+	Tipo varchar(10) not null check( Tipo IN ('fragil', 'común', 'bulto')),
 	Descripcion varchar(MAX) not null,
 	Peso decimal not null check( Peso >= 0 ),
 	NombreUsuarioEmpresa varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpresa) REFERENCES UsuariosEmpresa(NombreUsuario)
 )
-go 
+GO 
 
 CREATE TABLE SolicitudPaquete (
 	CodigodeBarras int not null,
@@ -102,8 +85,7 @@ INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'a
 Go
 
 INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
-	('Mario 
-	Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
+	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
 Go	
 
 INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
@@ -128,8 +110,6 @@ VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'Xime
 ( DATEADD(DAY, 72, GETDATE()), 'Tomas Bartolomiu', 'Austria 1941', 'Ximena Prueba')
 Go
 
---select * from Paquetes
-go
 INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
 VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
 ( 487878, 'común', 'Caja de zapatos', 800 , 'Juanjo Prueba'),
@@ -162,8 +142,7 @@ VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
 ( 96365, 'fragil', 'Apple TV', 600 , 'Juanjo Prueba'),
 ( 35241, 'común', 'Championes bebe', 200 , 'Juanjo Prueba'),
 ( 85695, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba')
- 
-
+GO 
 
 INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
 (45454,1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
@@ -176,57 +155,14 @@ INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES
 (23123, 10), (84127, 10), 
 (96365, 11), (35241, 11), 
 (85695, 12)
-Go
----------- Usuarios de SQL -------------------------
-
------------- NEW DEV -----------------
-CREATE PROCEDURE NuevoUsuario @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
-Begin
-	Declare @VarSentencia varchar (200)
-
-	If  Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario AND type='U' )
-	return -1
-
-	-- Multiples acciones - TRN
-		Begin TRAN
-		--primero creo el usuario de logueo
-			SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
-			EXEC(@VarSentencia)
-
-			if (@@ERROR <> 0 )
-			Begin 
-				Rollback TRAN
-				return -2
-			End
-
-			--segundo creo usuari db
-			Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
-			exec (@VarSentencia)
-
-			if (@@ERROR <> 0 )
-			begin 
-				Rollback TRAN
-				return -3
-			end
-
-				--segundo creo usuari db con permisos
-				Set @VarSentencia = 'GRANT EXECUTE TO [' +@NombreUsuario + ']'
-				exec (@VarSentencia)
-				if (@@ERROR <> 0 )
-				BEGIN 
-					Rollback TRAN
-					return -4
-				END
-
-		Commit TRAN
-		
-		--asigno rol de servidor al usuario recien creado
-		Exec sp_addsrvrolemember @loginame=@nomU, @rolename='securityAdmin'
-END
 GO
 
 
-CREATE PROCEDURE CambioContraseña @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
+
+----------------------------- Stored Procedures -------------------------------
+
+
+CREATE PROCEDURE CambioContrasena @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
 Begin
 	
 		Declare @VarSentencia varchar (200)
@@ -237,82 +173,61 @@ Begin
 			return -2
 		
 
-		Begin TRAN
-			Set @VarSentencia = 'ALTER LOGIN ['+ @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME(@Contrasenia,'''')
-			Exec (@VarSentencia)
-
-			If (@@ERROR <> 0)
-			Begin
-				Rollback TRAN
-				return -3
-			End
-			
-			
-			Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario			
-			If (@@ERROR <> 0)
-			Begin
-				Rollback TRAN
-				return -4
-			End
+		Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario			
+		If (@@ERROR <> 0)
+		Begin
+			return -3
+		End
 		
-		Commit TRAN	
+		Declare @oldContra varchar (6)
+		SET @oldContra = (Select Contrasenia From Usuarios Where NombreUsuario = @NombreUsuario)
+
+		EXEC sp_password @old = @oldContra, @new = @NombreUsuario, @loginame = @Contrasenia
+		
 End
 Go
-
--------------------------------------
-
 
 ---------- UsuariosEmpresa -------------------------
 
 
-Create Procedure UsuariosEmpresaAlta @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
-Begin
-	if (Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
-		return -1
 
-	if (Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 0))
-		Begin Try
+
+Create Procedure UsuariosEmpresaBaja @NombreUsuario varchar(50) As
+Begin
+	if (Not Exists(Select * From UsuariosEmpresa as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1))
+		return -1
+	
+	Declare @VarSentencia varchar (200)
+
+	if (Exists(Select * From Paquetes Where NombreUsuarioEmpresa = @NombreUsuario))
+		Begin try
 			Begin Tran
-				Update Usuarios Set Nombre = @Nombre, Activo = 1  Where NombreUsuario = @NombreUsuario
-				Update UsuariosEmpresa Set Telefono = @Telefono, Direccion = @Direccion, Email = @Email  Where NombreUsuario = @NombreUsuario
-			Commit Tran
+				Update Usuarios Set Activo = 0 Where NombreUsuario = @NombreUsuario 
+
+				Set @VarSentencia = 'Drop Login [' + @NombreUsuario + ']'
+				exec (@VarSentencia) 
+
+				Set @VarSentencia = 'Drop User [' + @NombreUsuario + ']'
+				exec (@VarSentencia)
+			Commit Tran 
 			Return 1
 			End Try
  			Begin Catch
 				Rollback Tran
 				Return -2
-		End Catch	
-	Else
-		Begin Try
-			Begin Tran
-				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
-				Insert into UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) values (@NombreUsuario, @Telefono, @Direccion, @Email)
-			Commit Tran 
-			Return 1
-		End Try
- 		Begin Catch
-			Rollback Tran
-			Return -2
-		End Catch
-End
-go
-
-
-Create Procedure UsuariosEmpresaBaja @NombreUsuario varchar(50) As
-Begin
-	if (Not Exists(Select * From UsuariosEmpresa Where NombreUsuario = @NombreUsuario))
-		return -1
-	
-	if (Exists(Select * From Paquetes Where NombreUsuarioEmpresa = @NombreUsuario))
-		Begin
-			Update Usuarios Set Activo = 0 Where NombreUsuario = @NombreUsuario 
-			return 1
-		End
+			End Catch
 	Else
 		Begin try
 			Begin Tran
 				Delete UsuariosEmpresa Where NombreUsuario = @NombreUsuario
+				
 				Delete Usuarios Where NombreUsuario =  @NombreUsuario
+
+				Set @VarSentencia = 'Drop Login [' + @NombreUsuario + ']'
+				exec (@VarSentencia) 
+
+				Set @VarSentencia = 'Drop User [' + @NombreUsuario + ']'
+				exec (@VarSentencia)
 			Commit Tran 
 			Return 1
 		End Try
@@ -325,7 +240,7 @@ Go
 
 Create Procedure UsuariosEmpresaModificar @NombreUsuario varchar(50), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
 Begin
-	if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+	if (Not Exists(Select * From UsuariosEmpresa as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1))
 		return -1
 	else
 		Begin try
@@ -358,67 +273,58 @@ Go
 
 ---------- UsuariosEmpleado -------------------------
 
-Create Procedure UsuariosEmpleadoAlta @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @HoraInicio time, @HoraFin time As
-Begin
-	if (Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
-		return -1
 
-	if (Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 0))
-		Begin Try
-			Begin Tran
-				Update Usuarios Set Nombre = @Nombre, Activo = 1  Where NombreUsuario = @NombreUsuario
-				Update UsuariosEmpleado Set HoraInicio = @HoraInicio, HoraFin = @HoraFin Where NombreUsuario = @NombreUsuario
-			Commit Tran
-			Return 1
+Create Procedure UsuariosEmpleadoBaja @NombreUsuario varchar(50) As
+Begin
+	if (Not Exists(Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1))
+		return -1
+	
+	Declare @VarSentencia varchar (200)
+	
+	if (Exists(Select * From SolicitudesDeEntrega Where NombreUsuarioEmpleado = @NombreUsuario))
+			Begin try 
+				Begin tran
+
+				Update Usuarios Set Activo = 0 Where NombreUsuario = @NombreUsuario
+				
+				Set @VarSentencia = 'Drop Login [' + @NombreUsuario + ']'
+				exec (@VarSentencia) 
+
+				Set @VarSentencia = 'Drop User [' + @NombreUsuario + ']'
+				exec (@VarSentencia)
+
+				Commit tran 
+				return 1
 			End Try
  			Begin Catch
 				Rollback Tran
 				Return -2
-		End Catch	
+			End Catch
 	Else
-		Begin Try
-			Begin Tran
-				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
-				Insert into UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) values (@NombreUsuario, @HoraInicio, @HoraFin)
-			Commit Tran 
-			Return 1
-		End Try
- 		Begin Catch
-			Rollback Tran
-			Return -2
-		End Catch
-End
-go
+			Begin try
+				Begin Tran
+					Delete UsuariosEmpleado Where NombreUsuario = @NombreUsuario
+					
+					Delete Usuarios Where NombreUsuario = @NombreUsuario
+					
+					Set @VarSentencia = 'Drop Login [' + @NombreUsuario + ']'
+					exec (@VarSentencia) 
 
-
-Create Procedure UsuariosEmpleadoBaja @NombreUsuario varchar(50) As
-Begin
-	if (Not Exists(Select * From UsuariosEmpleado Where NombreUsuario = @NombreUsuario))
-		return -1
-	
-	if (Exists(Select * From SolicitudesDeEntrega Where NombreUsuarioEmpleado = @NombreUsuario))
-		Begin
-			Update Usuarios Set Activo = 0 Where NombreUsuario = @NombreUsuario 
-			return 1
-		End
-	Else
-		Begin try
-			Begin Tran
-				Delete UsuariosEmpleado Where NombreUsuario = @NombreUsuario
-				Delete Usuarios Where NombreUsuario = @NombreUsuario
-			Commit Tran 
-			Return 1
-		End Try
- 		Begin Catch
-			Rollback Tran
-			Return -2
-		End Catch
+					Set @VarSentencia = 'Drop User [' + @NombreUsuario + ']'
+					exec (@VarSentencia)
+				Commit Tran 
+				Return 1
+			End Try
+ 			Begin Catch
+				Rollback Tran
+				Return -2
+			End Catch
 End
 go 
 
 Create Procedure UsuariosEmpleadoModificar  @NombreUsuario varchar(50), @Nombre varchar(70), @HoraInicio time, @HoraFin time As
 Begin
-	if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+	if (Not Exists (Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 1)) 
 		return -1
 	else
 		Begin try
@@ -449,18 +355,23 @@ Go
 
 ----- Usuarios ----
 
-Create Procedure UsuariosLogueo @NombreUsuario varchar(50), @Contrasenia varchar(6) AS 
+Create Procedure LogueoUsuarioEmpresa @NombreUsuario varchar(50), @Contrasenia varchar(6) AS 
 Begin 
- Select * from Usuarios where NombreUsuario = @NombreUsuario AND  Contrasenia = @Contrasenia 
+	Select * From UsuariosEmpresa as ue Inner Join Usuarios as u ON ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND  u.Contrasenia = @Contrasenia AND Activo = 1
 End
 Go
 
+Create Procedure LogueoUsuarioEmpleado @NombreUsuario varchar(50), @Contrasenia varchar(6) AS 
+Begin 
+	Select * From UsuariosEmpleado as ue Inner Join Usuarios as u ON ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND  u.Contrasenia = @Contrasenia AND Activo = 1
+End
+Go
 
 --------- SolicitudesDeEntrega ------------
 
 Create Procedure SolicitudesDeEntregaAlta @FechaDeEntrega date, @NombreDestinatario varchar(50), @DireccionDestinatario varchar(50), @NombreUsuarioEmpleado varchar(50)  As
 Begin
-if (Not Exists(Select * From UsuariosEmpleado Where NombreUsuario = @NombreUsuarioEmpleado )) 
+if (Not Exists(Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuarioEmpleado AND u.Activo = 1)) 
 	Begin
 		return -1
 	End
@@ -504,11 +415,10 @@ Create Procedure SolicitudesDeEntregaListar AS
 	Select * From SolicitudesDeEntrega
 Go
 
-
-
-Alter Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario varchar(50) AS
+Create Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario varchar(50) AS
 Begin
-	 Select se.NumeroInterno as 'Numero Interno', se.FechaDeEntrega as 'Fecha de Entrega', se.NombreDestinatario as 'Nombre Destinatario', se.DireccionDestinatario as 'Direcciòn Destinatario', se.EstadoSolicitud as 'Estado' From SolicitudesDeEntrega as se INNER JOIN SolicitudPaquete as sp on se.NumeroInterno = sp.NumeroInterno 
+	 Select DISTINCT se.NumeroInterno , se.FechaDeEntrega, se.NombreDestinatario, se.DireccionDestinatario, se.EstadoSolicitud, se.NombreUsuarioEmpleado  
+	 From SolicitudesDeEntrega as se INNER JOIN SolicitudPaquete as sp on se.NumeroInterno = sp.NumeroInterno 
 	 INNER JOIN Paquetes as p on sp.CodigodeBarras = p.CodigodeBarras 
 	 Where p.NombreUsuarioEmpresa = @NombreUsuario
 End
@@ -518,12 +428,13 @@ go
 
 Create Procedure PaquetesAlta @CodigodeBarras int, @Tipo varchar(10), @Descripcion varchar(Max), @Peso decimal, @NombreUsuarioEmpresa varchar(50) As
 Begin
-		if( Exists (Select * From Paquetes Where CodigodeBarras = @CodigodeBarras))
+	
+	if ( Exists (Select * From Paquetes Where CodigodeBarras = @CodigodeBarras))
 	Begin
 		return -1
 	End 
 
-	if (Not Exists (Select * From UsuariosEmpresa Where NombreUsuario = @NombreUsuarioEmpresa))
+	if (Not Exists (Select * From UsuariosEmpresa as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuarioEmpresa AND u.Activo = 1)) -- verificar si es activo todas las FK revisar que este activo
 	Begin
 		return -2
 	End 
@@ -565,13 +476,205 @@ Begin
 	if (Not Exists (Select * From Paquetes Where CodigodeBarras = @CodigodeBarras))
 		return -2
 
-	if ( Exists (Select * From SolicitudPaquete Where CodigodeBarras = @CodigodeBarras))
+	if ( Exists ( Select * From SolicitudPaquete Where CodigodeBarras = @CodigodeBarras AND NumeroInterno = @NumeroInterno ))
 		return -3
 
 	Insert into SolicitudPaquete values (@CodigodeBarras, @NumeroInterno )
 	return 1
 End
-Go
+GO
 
 
 
+------------- Roles --------------------------
+
+
+CREATE ROLE Empresa 
+GO 
+
+GRANT EXECUTE ON CambioContraseña TO Empresa
+GO
+GRANT EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empresa
+GO
+GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Empresa
+GO
+GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Empresa
+GO
+GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Empresa
+GO
+
+
+CREATE ROLE Publico 
+GO 
+GRANT EXECUTE ON LogueoUsuarioEmpleado TO Publico
+GO
+GRANT EXECUTE ON LogueoUsuarioEmpresa TO Publico
+GO
+GRANT EXECUTE ON SolicitudesDeEntregaListar TO Publico
+GO
+GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Publico
+GO
+GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Publico
+GO
+GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Publico
+GO
+
+CREATE ROLE Empleado 
+GO
+GRANT EXECUTE TO Empleado
+GO
+REVOKE EXECUTE ON LogueoUsuarioEmpleado TO Empleado
+GO
+REVOKE EXECUTE ON LogueoUsuarioEmpresa TO Empleado
+GO
+REVOKE EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empleado
+GO
+REVOKE EXECUTE ON SolicitudesDeEntregaListar TO Empleado
+GO
+
+---- Creacion de usuarios con asignacion de roles -----------------
+
+--creacion de usuarios
+
+USE master
+GO
+
+CREATE LOGIN [IIS APPPOOL\DefaultAppPool] FROM WINDOWS 
+GO
+
+USE Entregas
+GO
+
+CREATE USER [IIS APPPOOL\DefaultAppPool] FOR LOGIN [IIS APPPOOL\DefaultAppPool]
+GO
+
+EXEC sp_addrolemember @rolename='Publico', @membername=[IIS APPPOOL\DefaultAppPool]
+GO
+
+USE Entregas
+go
+
+
+Create Procedure UsuariosEmpresaAlta @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
+Begin
+	Declare @VarSentencia varchar(200)
+		
+	if (Exists (Select * from Usuarios  Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+		return -1
+
+	if (Exists (Select * from UsuariosEmpresa as ue Inner Join Usuarios as u on ue.NombreUsuario = u.NombreUsuario Where u.NombreUsuario = @NombreUsuario AND Activo = 0))
+		BEGIN
+			BEGIN TRY
+				BEGIN TRAN
+				--primero creo el usuario de logueo
+				SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
+				EXEC(@VarSentencia)
+
+			
+				Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
+				exec (@VarSentencia)
+
+			
+				Update Usuarios Set Nombre = @Nombre, Activo = 1  Where NombreUsuario = @NombreUsuario 
+			
+				Update UsuariosEmpresa Set Telefono = @Telefono, Direccion = @Direccion, Email = @Email  Where NombreUsuario = @NombreUsuario	
+				COMMIT TRAN
+			END TRY 
+			BEGIN CATCH
+				ROLLBACK TRAN
+				RETURN -2
+			END CATCH
+		END		
+	Else
+		BEGIN
+			BEGIN TRY
+				BEGIN TRAN 
+				--primero creo el usuario de logueo
+				SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
+				EXEC(@VarSentencia)
+
+			
+				Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
+				exec (@VarSentencia)
+
+			
+				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
+			
+				Insert into UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) values (@NombreUsuario, @Telefono, @Direccion, @Email)
+			
+			COMMIT TRAN
+			END TRY 
+			BEGIN CATCH
+				ROLLBACK TRAN
+				RETURN -2
+			END CATCH
+		END
+		
+		EXEC sp_addrolemember @rolename='Empresa', @membername=@NombreUsuario
+		RETURN 1		
+End
+go
+
+Create Procedure UsuariosEmpleadoAlta @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @HoraInicio time, @HoraFin time As
+Begin
+
+	Declare @VarSentencia varchar (200) 
+
+	if (Exists (Select * from Usuarios  Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
+		return -1
+
+	if (Exists (Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuario AND u.Activo = 0))
+		BEGIN
+			BEGIN TRY 
+				BEGIN TRAN
+					--primero creo el usuario de logueo
+					SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
+					EXEC(@VarSentencia)
+
+					--segundo creo usuari db
+					Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
+					exec (@VarSentencia)
+			
+					Update Usuarios Set Nombre = @Nombre, Activo = 1  Where NombreUsuario = @NombreUsuario
+
+					Update UsuariosEmpleado Set HoraInicio = @HoraInicio, HoraFin = @HoraFin Where NombreUsuario = @NombreUsuario
+			
+				COMMIT TRAN
+			END TRY	
+			BEGIN CATCH
+				ROLLBACK TRAN
+				RETURN -2
+			END CATCH
+		END	
+	Else
+		BEGIN
+			BEGIN TRY
+				BEGIN TRAN 
+				--primero creo el usuario de logueo
+				SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
+				EXEC(@VarSentencia)
+
+				--segundo creo usuari db
+				Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
+				exec (@VarSentencia)
+
+		
+				Insert into Usuarios (NombreUsuario, Contrasenia, Nombre) values (@NombreUsuario,  @Contrasenia, @Nombre)
+		
+				Insert into UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) values (@NombreUsuario, @HoraInicio, @HoraFin)
+			
+				COMMIT TRAN
+			END TRY
+			BEGIN CATCH
+				ROLLBACK TRAN
+				RETURN -2
+			END CATCH	
+		END		
+		--asigno rol de servidor al usuario recien creado
+		EXEC sp_addsrvrolemember @loginame=@NombreUsuario, @rolename='securityAdmin'
+
+		EXEC sp_addrolemember @rolename='Empleado', @membername=@NombreUsuario  
+
+		RETURN 1
+End
+go

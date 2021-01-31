@@ -27,7 +27,7 @@ namespace Persistencia.Clases
         #endregion
 
 
-        public void AgregarSolicitudEntrega(SolicitudEntrega S, Usuario ULogueado)
+        public void AgregarSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado)
         {
 
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
@@ -79,7 +79,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, Usuario ULogueado)
+        public void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -102,6 +102,8 @@ namespace Persistencia.Clases
 
                 if (return_value == -1)
                     throw new Exception(" La solicitud que intenta modificar no existe ");
+                if (return_value == -2)
+                    throw new Exception(" Ha habido un error al intentar modificar la solicitud ");
 
             }
             catch (Exception ex)
@@ -114,7 +116,7 @@ namespace Persistencia.Clases
             }
         }
 
-        public SolicitudEntrega BuscarSolicitudEntrega(int pNumeroInterno, Usuario ULogueado)
+        public SolicitudEntrega BuscarSolicitudEntrega(int pNumeroInterno, UsuarioEmpleado ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -144,7 +146,7 @@ namespace Persistencia.Clases
                     string dirDesti = dr["DireccionDestinatario"].ToString();
                     string estado = dr["EstadoSolicitud"].ToString();
                     string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
-                    UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleado(usuEmp, ULogueado);
+                    UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
                     List<Paquete> listaPaquete = PersistenciaPaquete.GetInstancia().ListarPaquetesEnSolicitud(pNumeroInterno, ULogueado);
                     solicitud = new SolicitudEntrega(pNumeroInterno, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
 
@@ -162,14 +164,14 @@ namespace Persistencia.Clases
             return solicitud;
         }
 
-        public List<SolicitudEntrega> ListarSolicitudEntrega(Usuario ULogueado)
+        public List<SolicitudEntrega> ListarSolicitudEntrega()
         {
 
-            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
+            SqlConnection oConexion = new SqlConnection();
 
             SqlCommand oComando = new SqlCommand("SolicitudesDeEntregaListar", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
-
+            
             List<SolicitudEntrega> listSolicitud = null;
 
             try
@@ -187,8 +189,8 @@ namespace Persistencia.Clases
                         string dirDesti = dr["DireccionDestinatario"].ToString();
                         string estado = dr["EstadoSolicitud"].ToString();
                         string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
-                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleado(usuEmp, ULogueado);
-                        List<Paquete> listaPaquete = PersistenciaPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
+                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
+                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
                         SolicitudEntrega solicitud = new SolicitudEntrega(numInt, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
 
                         listSolicitud.Add(solicitud);
@@ -209,7 +211,7 @@ namespace Persistencia.Clases
 
         }
 
-        public List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(Usuario ULogueado)
+        public List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -238,8 +240,8 @@ namespace Persistencia.Clases
                         string dirDesti = dr["DireccionDestinatario"].ToString();
                         string estado = dr["EstadoSolicitud"].ToString();
                         string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
-                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleado(usuEmp, ULogueado);
-                        List<Paquete> listaPaquete = PersistenciaPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
+                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
+                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
                         SolicitudEntrega solicitud = new SolicitudEntrega(numInt, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
 
                         listSolicitud.Add(solicitud);
