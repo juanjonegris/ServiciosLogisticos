@@ -11,9 +11,9 @@ namespace Persistencia
             internal static string Cnn(Usuario pUsu = null)
             {
                 if (pUsu == null)
-                    return "Data Source=LAPTOP-ITOE3H9S; Initial Catalog = Entregas; Integrated Security = true";
+                    return "Data Source=LAPTOP-ITOE3H9S; Initial Catalog=Entregas; Integrated Security = true";
                 else
-                    return "Data Source=LAPTOP-ITOE3H9S; Initial Catalog = EjemploExtraBD; User=" + pUsu.NombreUsuario + "; Password='" + pUsu.Contrasenia + "'";
+                    return "Data Source=LAPTOP-ITOE3H9S; Initial Catalog=Entregas; User=" + pUsu.NombreUsuario + "; Password='" + pUsu.Contrasenia + "'";
             }
     }
 }

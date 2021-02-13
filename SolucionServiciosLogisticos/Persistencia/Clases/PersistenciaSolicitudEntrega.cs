@@ -147,7 +147,7 @@ namespace Persistencia.Clases
                     string estado = dr["EstadoSolicitud"].ToString();
                     string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
                     UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
-                    List<Paquete> listaPaquete = PersistenciaPaquete.GetInstancia().ListarPaquetesEnSolicitud(pNumeroInterno, ULogueado);
+                    List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(pNumeroInterno, ULogueado);
                     solicitud = new SolicitudEntrega(pNumeroInterno, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
 
                     dr.Close();
@@ -167,12 +167,12 @@ namespace Persistencia.Clases
         public List<SolicitudEntrega> ListarSolicitudEntrega()
         {
 
-            SqlConnection oConexion = new SqlConnection();
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
 
             SqlCommand oComando = new SqlCommand("SolicitudesDeEntregaListar", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
             
-            List<SolicitudEntrega> listSolicitud = null;
+            List<SolicitudEntrega> listSolicitud = new List<SolicitudEntrega>();
 
             try
             {
@@ -189,8 +189,8 @@ namespace Persistencia.Clases
                         string dirDesti = dr["DireccionDestinatario"].ToString();
                         string estado = dr["EstadoSolicitud"].ToString();
                         string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
-                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
-                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
+                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp);
+                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt);
                         SolicitudEntrega solicitud = new SolicitudEntrega(numInt, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
 
                         listSolicitud.Add(solicitud);

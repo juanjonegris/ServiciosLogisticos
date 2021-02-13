@@ -59,7 +59,7 @@ namespace Persistencia.Clases
 
         }
 
-        internal List<Paquete> ListarPaquetesEnSolicitud(int pNnumeroInterno, Usuario ULogueado)
+        internal List<Paquete> ListarPaquetesEnSolicitud(int pNnumeroInterno, Usuario ULogueado = null)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
@@ -89,7 +89,7 @@ namespace Persistencia.Clases
                         codBar = (int)dr["CodigodeBarras"];
                         tipo = dr["Tipo"].ToString();
                         descripcion = dr["Descripcion"].ToString();
-                        peso = (double)dr["Peso"];
+                        peso = Convert.ToDouble(dr["Peso"]);
                         nombreUsuarioEmp = dr["NombreUsuarioEmpresa"].ToString();
                         empresa = PersistenciaUsuarioEmpresa.GetInstancia().BuscarUsuarioEmpresaTodos(nombreUsuarioEmp, ULogueado);
                         Paquete paquete = new Paquete(codBar, tipo, descripcion, peso, empresa);

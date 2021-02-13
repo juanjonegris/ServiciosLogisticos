@@ -69,7 +69,7 @@ namespace EC
         public Usuario(string nombreUsuario, string contrasenia, string nombre)
         {
             NombreUsuario = nombreUsuario;
-            Contrasenia = Contrasenia;
+            Contrasenia = contrasenia;
             Nombre = nombre;
         }
 

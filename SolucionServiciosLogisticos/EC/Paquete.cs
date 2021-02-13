@@ -94,7 +94,6 @@ namespace EC
             Descripcion = descripcion;
             Peso = peso;
             Empresa = empresa;
-            
         }
 
         public Paquete() { }

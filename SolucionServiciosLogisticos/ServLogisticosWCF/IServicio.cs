@@ -13,6 +13,7 @@ namespace ServLogisticosWCF
     [ServiceContract]
     public interface IServicio
     {
+
         #region Paquetes
 
         [OperationContract]
@@ -39,7 +40,7 @@ namespace ServLogisticosWCF
         void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado);
 
         [OperationContract]
-        XmlDocument ListarSolicitudEntrega();
+        string ListarSolicitudEntrega();
 
         [OperationContract]
         List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado);

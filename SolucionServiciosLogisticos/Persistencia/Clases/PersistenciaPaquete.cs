@@ -33,7 +33,7 @@ namespace Persistencia.Clases
             SqlCommand oComando = new SqlCommand("PaquetesAlta", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
-            SqlParameter _codBar = new SqlParameter("@CodigodeBarras", P.CodigoBarras;
+            SqlParameter _codBar = new SqlParameter("@CodigodeBarras", P.CodigoBarras);
             SqlParameter _tipo = new SqlParameter("@Tipo", P.Tipo);
             SqlParameter _desc = new SqlParameter("@Descripcion", P.Descripcion);
             SqlParameter _peso = new SqlParameter("@Peso", P.Peso);
@@ -78,7 +78,7 @@ namespace Persistencia.Clases
             SqlCommand oComando = new SqlCommand("PaqueteBuscar", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
-            SqlParameter _codBar = new SqlParameter("@CodigodeBarras", pCodigoBarras;
+            SqlParameter _codBar = new SqlParameter("@CodigodeBarras", pCodigoBarras);
             SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
             _Retorno.Direction = ParameterDirection.ReturnValue;
 

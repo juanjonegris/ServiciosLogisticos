@@ -54,9 +54,9 @@ namespace ServLogisticosWCF
             Fabrica.GetLS().ModificarEstadoSolicitudEntrega(S, ULogueado);
         }
 
-        XmlDocument IServicio.ListarSolicitudEntrega()
+        string IServicio.ListarSolicitudEntrega()
         {
-            return (Fabrica.GetLS().ListarSolicitudEntrega());
+            return (Fabrica.GetLS().ListarSolicitudEntrega().OuterXml);
         }
 
         List<SolicitudEntrega> IServicio.ListarSolicitudEntregaEmpresaLogueada( UsuarioEmpresa ULogueado)

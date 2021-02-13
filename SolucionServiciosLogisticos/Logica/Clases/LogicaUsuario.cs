@@ -79,6 +79,7 @@ namespace Logica.Clases
 
             return _usuario;
         }
+
         public Usuario LogueoUsuario(string pNombreUsuario, string pContrasenia)
         {
             Usuario _usuario = null;

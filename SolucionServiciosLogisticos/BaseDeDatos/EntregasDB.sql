@@ -1,4 +1,4 @@
-SE master
+USE master
 go
 
 
@@ -57,6 +57,7 @@ CREATE TABLE SolicitudesDeEntrega (
 )
 go
 
+
 CREATE TABLE Paquetes (
 	CodigodeBarras int not null Primary Key,
 	Tipo varchar(10) not null check( Tipo IN ('fragil', 'común', 'bulto')),
@@ -92,22 +93,22 @@ INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Pru
 	('Boris Prueba', '10:00', '18:00')
 Go
 
-INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado ) 
-VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'Ximena Prueba'),
-( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987', 'Boris Prueba'),
-( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789', 'Ximena Prueba'),
-( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871', 'Boris Prueba'),
-( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972', 'Ximena Prueba'),
-( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687', 'Boris Prueba'),
-( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25', 'Ximena Prueba'),
-( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789', 'Boris Prueba'),
-( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'Ximena Prueba'),
-( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897', 'Boris Prueba'),
-( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454', 'Ximena Prueba'),
-( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974', 'Boris Prueba'),
-( DATEADD(DAY, 49, GETDATE()), 'Servando Pagliari', 'Montenegro 7941', 'Ximena Prueba'),
-( DATEADD(DAY, 82, GETDATE()), 'Reina Rodriguez', 'Servia 1987', 'Boris Prueba'),
-( DATEADD(DAY, 72, GETDATE()), 'Tomas Bartolomiu', 'Austria 1941', 'Ximena Prueba')
+INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, EstadoSolicitud,NombreUsuarioEmpleado ) 
+VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'En Camino' ,'Ximena Prueba'),
+( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'En Camino' ,'Ximena Prueba'),
+( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974','En Camino' , 'Boris Prueba')
+--( DATEADD(DAY, 49, GETDATE()), 'Servando Pagliari', 'Montenegro 7941', 'Ximena Prueba'),
+--( DATEADD(DAY, 82, GETDATE()), 'Reina Rodriguez', 'Servia 1987', 'Boris Prueba'),
+--( DATEADD(DAY, 72, GETDATE()), 'Tomas Bartolomiu', 'Austria 1941', 'Ximena Prueba')
 Go
 
 INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
@@ -415,6 +416,7 @@ Create Procedure SolicitudesDeEntregaListar AS
 	Select * From SolicitudesDeEntrega
 Go
 
+
 Create Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario varchar(50) AS
 Begin
 	 Select DISTINCT se.NumeroInterno , se.FechaDeEntrega, se.NombreDestinatario, se.DireccionDestinatario, se.EstadoSolicitud, se.NombreUsuarioEmpleado  
@@ -492,7 +494,7 @@ GO
 CREATE ROLE Empresa 
 GO 
 
-GRANT EXECUTE ON CambioContraseña TO Empresa
+GRANT EXECUTE ON CambioContrasena TO Empresa
 GO
 GRANT EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empresa
 GO
@@ -678,3 +680,4 @@ Begin
 		RETURN 1
 End
 go
+

@@ -58,7 +58,7 @@ namespace EC
                 if (value.Trim().Length > 50)
                     throw new Exception("Debe especificar una dirección de hasta 50 caracteres");
               
-                if (!value.Contains(".") || !!value.Contains("@"))
+                if (!value.Contains(".") || !value.Contains("@"))
                     throw new Exception("Debe indicar una direccion de email válida");
                 _email = value;
             }

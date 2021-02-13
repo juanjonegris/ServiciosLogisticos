@@ -200,7 +200,7 @@ namespace Persistencia.Clases
             return usuarioEmpleado;
         }
 
-        internal UsuarioEmpleado BuscarUsuarioEmpleadoTodos(string pNombreUsuario, Usuario UELogueado)
+        internal UsuarioEmpleado BuscarUsuarioEmpleadoTodos(string pNombreUsuario, Usuario UELogueado = null)
         {
             SqlConnection oConexion = new SqlConnection(Conexion.Cnn(UELogueado));
 
