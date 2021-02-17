@@ -45,6 +45,9 @@ namespace ServLogisticosWCF
         [OperationContract]
         List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado);
 
+        [OperationContract]
+        List<SolicitudEntrega> ListarSolicitudEntregaEstado(UsuarioEmpleado ULogueado);
+
         #endregion
 
         #region Usuarios 

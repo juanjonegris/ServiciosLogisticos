@@ -96,7 +96,7 @@ namespace Persistencia.Clases
                     dr.Read();
                     string tipo = dr["Tipo"].ToString();
                     string descripcion = dr["Descripcion"].ToString();
-                    double peso = (double)dr["Peso"];
+                    Decimal peso = Convert.ToDecimal(dr["Peso"]);
                     string nombreUsuarioEmp = dr["NombreUsuarioEmpresa"].ToString();
                     UsuarioEmpresa empresa = PersistenciaUsuarioEmpresa.GetInstancia().BuscarUsuarioEmpresaTodos(nombreUsuarioEmp, ULogueado);
                     paquete = new Paquete(pCodigoBarras, tipo, descripcion, peso, empresa);
@@ -125,7 +125,7 @@ namespace Persistencia.Clases
             int codBar;
             string tipo;
             string descripcion;
-            double peso;
+            Decimal peso;
             string nombreUsuarioEmp;
             UsuarioEmpresa empresa;
             try
@@ -140,7 +140,7 @@ namespace Persistencia.Clases
                         codBar = (int)dr["CodigodeBarras"];
                         tipo = dr["Tipo"].ToString();
                         descripcion = dr["Descripcion"].ToString();
-                        peso = (double)dr["Peso"];
+                        peso = Convert.ToDecimal(dr["Peso"]);
                         nombreUsuarioEmp = dr["NombreUsuarioEmpresa"].ToString();
                         empresa = PersistenciaUsuarioEmpresa.GetInstancia().BuscarUsuarioEmpresaTodos(nombreUsuarioEmp, ULogueado);
                         Paquete paquete = new Paquete(codBar, tipo, descripcion, peso, empresa);

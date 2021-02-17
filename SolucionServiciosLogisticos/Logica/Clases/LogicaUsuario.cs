@@ -35,13 +35,13 @@ namespace Logica.Clases
             {
                 UsuarioEmpleado UE = (UsuarioEmpleado)U;
 
-                if ( Convert.ToInt32(UE.HoraInicio) >= Convert.ToInt32(UE.HoraFin) )
-                {
-                    throw new Exception("Hora de finalizacion tiene que ser posterior a la de inicio");
-                } else
-                {
+                //if ( Convert.ToInt32(UE.HoraInicio) >= Convert.ToInt32(UE.HoraFin) )
+                //{
+                //    throw new Exception("Hora de finalizacion tiene que ser posterior a la de inicio");
+                //} else
+                //{
                     Persistencia.Fabrica.GetPUE().AgregarUsuarioEmpleado(UE, ULogueado);
-                }
+                //}
             }
         }
 

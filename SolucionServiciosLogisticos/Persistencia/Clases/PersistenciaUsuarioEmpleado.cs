@@ -35,8 +35,8 @@ namespace Persistencia.Clases
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UE.NombreUsuario);
-            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
             SqlParameter _contra = new SqlParameter("@Contrasenia", UE.Contrasenia);
+            SqlParameter _nombre = new SqlParameter("@Nombre", UE.Nombre);
             SqlParameter _hini = new SqlParameter("@HoraInicio", UE.HoraInicio);
             SqlParameter _hfin = new SqlParameter("@HoraFin", UE.HoraFin);
 
@@ -66,7 +66,6 @@ namespace Persistencia.Clases
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally

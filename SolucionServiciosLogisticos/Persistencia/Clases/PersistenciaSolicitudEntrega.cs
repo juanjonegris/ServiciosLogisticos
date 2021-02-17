@@ -55,6 +55,10 @@ namespace Persistencia.Clases
                 oConexion.Open();
                 _miTransaccion = oConexion.BeginTransaction();
 
+                oComando.Transaction = _miTransaccion;
+                oComando.ExecuteNonQuery();
+
+
                 int numeroInterno = Convert.ToInt32(_Retorno.Value);
 
                 if (numeroInterno == -1)
@@ -164,10 +168,61 @@ namespace Persistencia.Clases
             return solicitud;
         }
 
+
         public List<SolicitudEntrega> ListarSolicitudEntrega()
         {
 
-            SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
+            SqlConnection oConexion = oConexion = new SqlConnection(Conexion.Cnn());
+
+            SqlCommand oComando = new SqlCommand("SolicitudesDeEntregaListar", oConexion);
+            oComando.CommandType = CommandType.StoredProcedure;
+
+            List<SolicitudEntrega> listSolicitud = new List<SolicitudEntrega>();
+
+            try
+            {
+                oConexion.Open();
+                SqlDataReader dr = oComando.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        int numInt = (int)dr["NumeroInterno"];
+                        DateTime fechaEntr = (DateTime)dr["FechaDeEntrega"];
+                        string nombreDest = dr["NombreDestinatario"].ToString();
+                        string dirDesti = dr["DireccionDestinatario"].ToString();
+                        string estado = dr["EstadoSolicitud"].ToString();
+                        string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
+                        
+                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp);
+                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt);
+                        SolicitudEntrega solicitud = new SolicitudEntrega(numInt, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
+                        
+                        listSolicitud.Add(solicitud);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                oConexion.Close();
+            }
+
+            return listSolicitud;
+
+        }
+
+
+
+        public List<SolicitudEntrega> ListarSolicitudEntrega(UsuarioEmpleado ULogueado = null)
+        {
+
+            SqlConnection oConexion = oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
             SqlCommand oComando = new SqlCommand("SolicitudesDeEntregaListar", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
@@ -189,10 +244,11 @@ namespace Persistencia.Clases
                         string dirDesti = dr["DireccionDestinatario"].ToString();
                         string estado = dr["EstadoSolicitud"].ToString();
                         string usuEmp = dr["NombreUsuarioEmpleado"].ToString();
-                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp);
-                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt);
+                        
+                        UsuarioEmpleado empleado = PersistenciaUsuarioEmpleado.GetInstancia().BuscarUsuarioEmpleadoTodos(usuEmp, ULogueado);
+                        List<Paquete> listaPaquete = PersistenciaSolicitudPaquete.GetInstancia().ListarPaquetesEnSolicitud(numInt, ULogueado);
                         SolicitudEntrega solicitud = new SolicitudEntrega(numInt, fechaEntr, nombreDest, dirDesti, estado, empleado, listaPaquete);
-
+                        
                         listSolicitud.Add(solicitud);
                     }
                 }
@@ -210,6 +266,8 @@ namespace Persistencia.Clases
             return listSolicitud;
 
         }
+
+
 
         public List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado)
         {

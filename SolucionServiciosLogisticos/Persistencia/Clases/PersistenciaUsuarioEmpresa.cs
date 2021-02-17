@@ -37,7 +37,7 @@ namespace Persistencia.Clases
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", UEM.NombreUsuario);
-            SqlParameter _contra = new SqlParameter("@Contrasenia", UEM.NombreUsuario);
+            SqlParameter _contra = new SqlParameter("@Contrasenia", UEM.Contrasenia);
             SqlParameter _nombre = new SqlParameter("@Nombre", UEM.Nombre);
             SqlParameter _telefono = new SqlParameter("@Telefono", UEM.Telefono);
             SqlParameter _direccion = new SqlParameter("@Direccion", UEM.Direccion);

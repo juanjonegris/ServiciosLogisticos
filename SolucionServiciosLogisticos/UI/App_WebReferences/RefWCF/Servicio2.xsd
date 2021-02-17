@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://laptop-itoe3h9s/ServicioWCF/Servicio.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/EC" />
+  <xs:element name="AgregarPaquete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="P" nillable="true" type="q1:Paquete" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q2:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AgregarPaqueteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarPaquete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pCodigoBarras" type="xs:int" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q3:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarPaqueteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="BuscarPaqueteResult" nillable="true" type="q4:Paquete" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarPaquetesSinSolicitud">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q5:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarPaquetesSinSolicitudResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ListarPaquetesSinSolicitudResult" nillable="true" type="q6:ArrayOfPaquete" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AgregarSolicitudEntrega">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="S" nillable="true" type="q7:SolicitudEntrega" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q8:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AgregarSolicitudEntregaResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarSolicitudEntrega">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pNumeroInterno" type="xs:int" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q9:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarSolicitudEntregaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="BuscarSolicitudEntregaResult" nillable="true" type="q10:SolicitudEntrega" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModificarEstadoSolicitudEntrega">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="S" nillable="true" type="q11:SolicitudEntrega" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q12:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModificarEstadoSolicitudEntregaResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntrega">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntregaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ListarSolicitudEntregaResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntregaEmpresaLogueada">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q13:UsuarioEmpresa" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntregaEmpresaLogueadaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ListarSolicitudEntregaEmpresaLogueadaResult" nillable="true" type="q14:ArrayOfSolicitudEntrega" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntregaEstado">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q15:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSolicitudEntregaEstadoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ListarSolicitudEntregaEstadoResult" nillable="true" type="q16:ArrayOfSolicitudEntrega" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AgregarUsuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="U" nillable="true" type="q17:Usuario" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q18:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AgregarUsuarioResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EliminarUsuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="U" nillable="true" type="q19:Usuario" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q20:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EliminarUsuarioResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModificarUsuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="U" nillable="true" type="q21:Usuario" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q22:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModificarUsuarioResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarUsuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pNombreUsuario" nillable="true" type="xs:string" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q23:UsuarioEmpleado" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuscarUsuarioResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="BuscarUsuarioResult" nillable="true" type="q24:Usuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogueoUsuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pNombreUsuario" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="pContrasenia" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogueoUsuarioResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="LogueoUsuarioResult" nillable="true" type="q25:Usuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

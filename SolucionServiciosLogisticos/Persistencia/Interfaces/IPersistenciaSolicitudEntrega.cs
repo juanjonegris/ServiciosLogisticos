@@ -13,6 +13,7 @@ namespace Persistencia.Interfaces
         SolicitudEntrega BuscarSolicitudEntrega(int pNumeroInterno, UsuarioEmpleado ULogueado);
         void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado);
         List<SolicitudEntrega> ListarSolicitudEntrega();
+        List<SolicitudEntrega> ListarSolicitudEntrega(UsuarioEmpleado ULogueado);
         List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado);
     }
 }

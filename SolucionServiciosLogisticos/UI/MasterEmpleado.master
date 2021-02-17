@@ -1,0 +1,55 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterEmpleado.master.cs" Inherits="MasterEmpleado" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="container">
+            <header>
+                <div id="master-container">
+                    <div>
+                        <nav>
+                            <ul>
+                                <li><a href="ABMEmpleado.aspx">Gestión de Empleados</a></li>
+                                <li><a href="ABMEmpresa.aspx">Gestión de Empresas</a></li>
+                                <li><a href="AltaPaquetes.aspx">Ingreso de Paquetes</a></li>
+                                <li><a href="AltaSolicituddeEntrega.aspx">Alta Solicitud de Entrega</a></li>
+                                <li><a href="CambioEstadoSolicitud.aspx">Cambio de estado de Solicitudes</a></li>
+                                <li><a href="ListadoPaquetes.aspx">Paquetes sin asignar</a></li>
+                            </ul>
+                        </nav>
+                        <div id="bienvenida">
+                            <p>
+                                Bienvenido  
+                            </p>
+                            <asp:Label ID="lblBienvenido" runat="server" Text="Label"></asp:Label>
+                            <p>a Bios Classifieds.</p>
+                        </div>
+                        <div>
+                            <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" />
+                        </div>
+                    </div>
+                    </div>
+            </header>
+
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+                      
+        </div>
+    <footer>
+        <p>
+            <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpleado.aspx">Volver</asp:HyperLink>
+        </p>
+        <p>&copy Analista de Sistemas - Proyecto Final  2020 - 2021</p>
+    </footer>
+    </form>
+</body>
+</html>

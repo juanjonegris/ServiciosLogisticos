@@ -15,7 +15,7 @@ namespace EC
         private int _codigoBarras;
         private string _tipo;
         private string _descripcion;
-        private double _peso;
+        private Decimal _peso;
         private UsuarioEmpresa _empresa;
 
 
@@ -62,7 +62,7 @@ namespace EC
         }
 
         [DataMember]
-        public double Peso
+        public Decimal Peso
         {
             get { return _peso; }
 
@@ -87,7 +87,7 @@ namespace EC
             }
         }
 
-        public Paquete(int codigoBarras, string tipo, string descripcion, double peso, UsuarioEmpresa empresa)
+        public Paquete(int codigoBarras, string tipo, string descripcion, Decimal peso, UsuarioEmpresa empresa)
         {
             CodigoBarras = codigoBarras;
             Tipo = tipo;

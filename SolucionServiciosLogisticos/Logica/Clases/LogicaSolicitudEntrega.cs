@@ -173,5 +173,10 @@ namespace Logica.Clases
         {
             return (Persistencia.Fabrica.GetPS().ListarSolicitudEntregaEmpresaLogueada(ULogueado));
         }
+
+        public List<SolicitudEntrega> ListarSolicitudEntregaEstado(UsuarioEmpleado ULogueado)
+        {
+            return (Persistencia.Fabrica.GetPS().ListarSolicitudEntrega( ULogueado ));
+        }
     }
 }

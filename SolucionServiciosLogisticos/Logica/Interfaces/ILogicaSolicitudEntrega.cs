@@ -15,5 +15,6 @@ namespace Logica.Interfaces
         void ModificarEstadoSolicitudEntrega(SolicitudEntrega S, UsuarioEmpleado ULogueado);
         XmlDocument ListarSolicitudEntrega();
         List<SolicitudEntrega> ListarSolicitudEntregaEmpresaLogueada(UsuarioEmpresa ULogueado);
+        List<SolicitudEntrega> ListarSolicitudEntregaEstado(UsuarioEmpleado ULogueado);
     }
 }

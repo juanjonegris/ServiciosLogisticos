@@ -28,13 +28,13 @@ namespace Persistencia.Clases
         internal void AltaSolicitudPaquete(int numeroInterno, int codigoBarras, SqlTransaction _miTransaccion)
         {
             SqlCommand oComando = new SqlCommand("SolicitudPaqueteAlta", _miTransaccion.Connection);
-            SqlParameter _numInt = new SqlParameter("@CodigodeBarras", codigoBarras);
-            SqlParameter _nomDest = new SqlParameter("@NumeroInterno", numeroInterno);
+            SqlParameter _code = new SqlParameter("@CodigodeBarras", codigoBarras);
+            SqlParameter _intNum = new SqlParameter("@NumeroInterno", numeroInterno);
             SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
             _Retorno.Direction = ParameterDirection.ReturnValue;
 
-            oComando.Parameters.Add(_numInt);
-            oComando.Parameters.Add(_nomDest);
+            oComando.Parameters.Add(_code);
+            oComando.Parameters.Add(_intNum);
             oComando.Parameters.Add(_Retorno);
 
             try
@@ -73,7 +73,7 @@ namespace Persistencia.Clases
             int codBar;
             string tipo;
             string descripcion;
-            double peso;
+            Decimal peso;
             string nombreUsuarioEmp;
             UsuarioEmpresa empresa;
 
@@ -89,7 +89,7 @@ namespace Persistencia.Clases
                         codBar = (int)dr["CodigodeBarras"];
                         tipo = dr["Tipo"].ToString();
                         descripcion = dr["Descripcion"].ToString();
-                        peso = Convert.ToDouble(dr["Peso"]);
+                        peso = Convert.ToDecimal(dr["Peso"]);
                         nombreUsuarioEmp = dr["NombreUsuarioEmpresa"].ToString();
                         empresa = PersistenciaUsuarioEmpresa.GetInstancia().BuscarUsuarioEmpresaTodos(nombreUsuarioEmp, ULogueado);
                         Paquete paquete = new Paquete(codBar, tipo, descripcion, peso, empresa);

@@ -72,6 +72,7 @@ namespace EC
             }
         }
 
+        [DataMember]
         public string Estado
         {
             get { return _estado; }

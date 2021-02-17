@@ -64,6 +64,10 @@ namespace ServLogisticosWCF
             return (Fabrica.GetLS().ListarSolicitudEntregaEmpresaLogueada ( ULogueado ));
         }
 
+        public List<SolicitudEntrega> ListarSolicitudEntregaEstado(UsuarioEmpleado ULogueado)
+        {
+            return (Fabrica.GetLS().ListarSolicitudEntregaEstado(ULogueado));
+        }
         #endregion
 
         #region Usuarios 
@@ -82,6 +86,7 @@ namespace ServLogisticosWCF
         {
             Fabrica.GetLU().ModificarUsuario(U, ULogueado);
         }
+
 
         Usuario IServicio.BuscarUsuario(string pNombreUsuario, UsuarioEmpleado ULogueado)
         {

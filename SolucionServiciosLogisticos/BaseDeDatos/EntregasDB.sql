@@ -77,87 +77,6 @@ CREATE TABLE SolicitudPaquete (
 )
 go 
 
--------------------------- Insert Data --------------------------------
-
-
-INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'abg23!', 'Juan Jose Negris'),
-	('Mario Prueba', 'acb23@', 'Mario Puzo'),('James Prueba', 'adf23:', 'James Batdrock'),
-	('Ximena Prueba', 'afs24,', 'Ximena Smith'),('Boris Prueba', 'atr23!', 'Boris Hendrson')
-Go
-
-INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
-	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
-Go	
-
-INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
-	('Boris Prueba', '10:00', '18:00')
-Go
-
-INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, EstadoSolicitud,NombreUsuarioEmpleado ) 
-VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'En Camino' ,'Ximena Prueba'),
-( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987','En Camino' , 'Boris Prueba'),
-( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789','En Camino' , 'Ximena Prueba'),
-( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871','En Camino' , 'Boris Prueba'),
-( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972','En Camino' , 'Ximena Prueba'),
-( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687','En Camino' , 'Boris Prueba'),
-( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25','En Camino' , 'Ximena Prueba'),
-( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789','En Camino' , 'Boris Prueba'),
-( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'En Camino' ,'Ximena Prueba'),
-( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897','En Camino' , 'Boris Prueba'),
-( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454','En Camino' , 'Ximena Prueba'),
-( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974','En Camino' , 'Boris Prueba')
---( DATEADD(DAY, 49, GETDATE()), 'Servando Pagliari', 'Montenegro 7941', 'Ximena Prueba'),
---( DATEADD(DAY, 82, GETDATE()), 'Reina Rodriguez', 'Servia 1987', 'Boris Prueba'),
---( DATEADD(DAY, 72, GETDATE()), 'Tomas Bartolomiu', 'Austria 1941', 'Ximena Prueba')
-Go
-
-INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
-VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
-( 487878, 'común', 'Caja de zapatos', 800 , 'Juanjo Prueba'),
-( 48788, 'fragil', 'IPad', 500 , 'Juanjo Prueba'),
-( 1254, 'bulto', 'Caja comun', 3000 , 'James Prueba'),
-( 8754, 'común', 'Mochila', 500 , 'Mario Prueba'),
-( 98712, 'fragil', 'TV', 5000 , 'James Prueba'),
-( 54458, 'bulto', 'Caja especial', 8500 , 'Juanjo Prueba'),
-( 54545, 'fragil', 'Parabrisas', 16000 , 'Juanjo Prueba'),
-( 885412, 'común', 'Caja comun', 3000 , 'Mario Prueba'),
-( 85471, 'fragil', 'Parlantes', 2200 , 'Juanjo Prueba'),
-( 66336, 'fragil', 'Auriculares', 300 , 'Juanjo Prueba'),
-( 85214, 'común', 'Jeans', 800 , 'Juanjo Prueba'),
-( 36255, 'fragil', 'Electrodomestico', 3200 , 'James Prueba'),
-( 87456, 'bulto', 'Caja comun', 3000 , 'Juanjo Prueba'),
-( 18744, 'común', 'Calzado', 1200 , 'Mario Prueba'),
-( 84484, 'fragil', 'Lentes Caja', 2000 , 'James Prueba'),
-( 78452, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
-( 23215, 'común', 'Sillas Plegables', 18000 , 'Juanjo Prueba'),
-( 12121, 'fragil', 'Mesa vidrio', 20000 , 'Juanjo Prueba'),
-( 22123, 'fragil', 'Heladera', 20500 , 'Juanjo Prueba'),
-( 36952, 'común', 'Juguetes caja', 3800 , 'James Prueba'),
-( 25321, 'fragil', 'Aticulos iluminacion', 6000 , 'Juanjo Prueba'),
-( 84645, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba'),
-( 231545, 'común', 'Mochila', 500 , 'Juanjo Prueba'),
-( 96325, 'fragil', 'Espejo', 6500 , 'Juanjo Prueba'),
-( 74145, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
-( 23123, 'fragil', 'Cristaleria', 3500 , 'Juanjo Prueba'),
-( 84127, 'común', 'Remeras', 2000 , 'James Prueba'),
-( 96365, 'fragil', 'Apple TV', 600 , 'Juanjo Prueba'),
-( 35241, 'común', 'Championes bebe', 200 , 'Juanjo Prueba'),
-( 85695, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba')
-GO 
-
-INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
-(45454,1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
-(885412, 4), (66336, 4), (85214, 4),
-(36255, 5), (87456, 5), (18744, 5),
-(84484, 6), (78452, 6),
-(23215, 7), (12121, 7), (22123, 7),
-(36952, 8), (25321,8), (84645,8),
-(231545, 9), (96325, 9), (74145, 9),
-(23123, 10), (84127, 10), 
-(96365, 11), (35241, 11), 
-(85695, 12)
-GO
-
 
 
 ----------------------------- Stored Procedures -------------------------------
@@ -370,16 +289,19 @@ Go
 
 --------- SolicitudesDeEntrega ------------
 
-Create Procedure SolicitudesDeEntregaAlta @FechaDeEntrega date, @NombreDestinatario varchar(50), @DireccionDestinatario varchar(50), @NombreUsuarioEmpleado varchar(50)  As
+ALTER Procedure SolicitudesDeEntregaAlta @FechaDeEntrega date, @NombreDestinatario varchar(50), @DireccionDestinatario varchar(50), @NombreUsuarioEmpleado varchar(50)  As
 Begin
 if (Not Exists(Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuarioEmpleado AND u.Activo = 1)) 
 	Begin
 		return -1
 	End
 Insert into SolicitudesDeEntrega (FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado) values (@FechaDeEntrega, @NombreDestinatario, @DireccionDestinatario, @NombreUsuarioEmpleado )
-	RETURN ident_current('SolicitudesDeEntrega');
+	RETURN @@IDENTITY
+	-- ident_current('SolicitudesDeEntrega');
 End
 go
+
+
 
 Create Procedure SolicitudesDeEntregaModificarEstado  @NumeroInterno int AS
 Begin
@@ -416,6 +338,9 @@ Create Procedure SolicitudesDeEntregaListar AS
 	Select * From SolicitudesDeEntrega
 Go
 
+Create Procedure SolicitudesDeEntregaListarCaminoyDeposito AS
+	Select * From SolicitudesDeEntrega Where EstadoSolicitud = 'En Camino' AND EstadoSolicitud = 'En Depósito' 
+Go
 
 Create Procedure SolicitudesDeEntregaListarPorEmpresa @NombreUsuario varchar(50) AS
 Begin
@@ -531,7 +456,11 @@ REVOKE EXECUTE ON LogueoUsuarioEmpresa TO Empleado
 GO
 REVOKE EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empleado
 GO
-REVOKE EXECUTE ON SolicitudesDeEntregaListar TO Empleado
+GRANT EXECUTE ON SolicitudesDeEntregaListar TO Empleado
+GO
+GRANT ALTER ANY USER TO Empleado
+GO
+GRANT ALTER ANY ROLE TO Empleado
 GO
 
 ---- Creacion de usuarios con asignacion de roles -----------------
@@ -633,7 +562,7 @@ Begin
 					SET @VarSentencia = 'CREATE LOGIN [' + @NombreUsuario + '] WITH PASSWORD = ' + QUOTENAME (@Contrasenia, '''')
 					EXEC(@VarSentencia)
 
-					--segundo creo usuari db
+					--segundo creo usuario db
 					Set @VarSentencia = 'CREATE USER ['+@NombreUsuario + '] FROM LOGIN [' +@NombreUsuario + ']'
 					exec (@VarSentencia)
 			
@@ -681,3 +610,94 @@ Begin
 End
 go
 
+
+
+-------------------------- Insert Data --------------------------------
+
+
+--INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'abg23!', 'Juan Jose Negris'),
+--	('Mario Prueba', 'acb23@', 'Mario Puzo'),('James Prueba', 'adf23:', 'James Batdrock'),
+--	('Ximena Prueba', 'afs24,', 'Ximena Smith'),('Boris Prueba', 'atr23!', 'Boris Hendrson')
+--Go
+
+--INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
+--	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
+--Go	
+
+--INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
+--	('Boris Prueba', '10:00', '18:00')
+--Go
+
+EXEC UsuariosEmpresaAlta 'Juanjo Prueba', 'abg23!', 'Juan Jose Negris', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'
+go
+EXEC UsuariosEmpresaAlta 'Mario Prueba', 'acb23@', 'Mario Puzo',  '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'
+go
+EXEC UsuariosEmpresaAlta 'James Prueba', 'adf23:', 'James Batdrock', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com'
+go
+EXEC UsuariosEmpleadoAlta 'Ximena Prueba', 'afs24,', 'Ximena Smith', '09:00', '17:00'
+go
+EXEC UsuariosEmpleadoAlta 'Boris Prueba', 'atr23!', 'Boris Hendrson',  '10:00', '18:00'
+go
+
+
+INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, EstadoSolicitud,NombreUsuarioEmpleado ) 
+VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941', 'En Camino' ,'Ximena Prueba'),
+( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'En Camino' ,'Ximena Prueba'),
+( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897','En Camino' , 'Boris Prueba'),
+( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454','En Camino' , 'Ximena Prueba'),
+( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974','En Camino' , 'Boris Prueba')
+Go
+
+INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
+VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
+( 487878, 'común', 'Caja de zapatos', 800 , 'Juanjo Prueba'),
+( 48788, 'fragil', 'IPad', 500 , 'Juanjo Prueba'),
+( 1254, 'bulto', 'Caja comun', 3000 , 'James Prueba'),
+( 8754, 'común', 'Mochila', 500 , 'Mario Prueba'),
+( 98712, 'fragil', 'TV', 5000 , 'James Prueba'),
+( 54458, 'bulto', 'Caja especial', 8500 , 'Juanjo Prueba'),
+( 54545, 'fragil', 'Parabrisas', 16000 , 'Juanjo Prueba'),
+( 885412, 'común', 'Caja comun', 3000 , 'Mario Prueba'),
+( 85471, 'fragil', 'Parlantes', 2200 , 'Juanjo Prueba'),
+( 66336, 'fragil', 'Auriculares', 300 , 'Juanjo Prueba'),
+( 85214, 'común', 'Jeans', 800 , 'Juanjo Prueba'),
+( 36255, 'fragil', 'Electrodomestico', 3200 , 'James Prueba'),
+( 87456, 'bulto', 'Caja comun', 3000 , 'Juanjo Prueba'),
+( 18744, 'común', 'Calzado', 1200 , 'Mario Prueba'),
+( 84484, 'fragil', 'Lentes Caja', 2000 , 'James Prueba'),
+( 78452, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
+( 23215, 'común', 'Sillas Plegables', 18000 , 'Juanjo Prueba'),
+( 12121, 'fragil', 'Mesa vidrio', 20000 , 'Juanjo Prueba'),
+( 22123, 'fragil', 'Heladera', 20500 , 'Juanjo Prueba'),
+( 36952, 'común', 'Juguetes caja', 3800 , 'James Prueba'),
+( 25321, 'fragil', 'Aticulos iluminacion', 6000 , 'Juanjo Prueba'),
+( 84645, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba'),
+( 231545, 'común', 'Mochila', 500 , 'Juanjo Prueba'),
+( 96325, 'fragil', 'Espejo', 6500 , 'Juanjo Prueba'),
+( 74145, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
+( 23123, 'fragil', 'Cristaleria', 3500 , 'Juanjo Prueba'),
+( 84127, 'común', 'Remeras', 2000 , 'James Prueba'),
+( 96365, 'fragil', 'Apple TV', 600 , 'Juanjo Prueba'),
+( 35241, 'común', 'Championes bebe', 200 , 'Juanjo Prueba'),
+( 85695, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba')
+GO 
+
+INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
+(45454,1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
+(885412, 4), (66336, 4), (85214, 4),
+(36255, 5), (87456, 5), (18744, 5),
+(84484, 6), (78452, 6),
+(23215, 7), (12121, 7), (22123, 7),
+(36952, 8), (25321,8), (84645,8),
+(231545, 9), (96325, 9), (74145, 9),
+(23123, 10), (84127, 10), 
+(96365, 11), (35241, 11), 
+(85695, 12)
+GO

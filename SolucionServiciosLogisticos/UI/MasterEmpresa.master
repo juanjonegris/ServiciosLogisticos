@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterEmpresa.master.cs" Inherits="MasterEmpresa" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="container">
+            <header>
+                <div id="master-container">
+                    <div> 
+                        <p><a href="SolicitudesEmpresa.aspx">Mis Solicitudesa de Entrega</a></p>
+                        <div id="bienvenida">
+                            <p>
+                                Bienvenido  
+                            </p>
+                            <asp:Label ID="lblBienvenido" runat="server" Text="Label"></asp:Label>
+                            <p>a Servicios Logisticos.</p>
+                        </div>
+                        <div>
+                            <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" />
+                        </div>
+                    </div>
+                   </div> 
+                </header>   
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+            
+        <footer>
+            <p>
+                <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpresa.aspx">Volver</asp:HyperLink>
+            </p>
+            <p>&copy Analista de Sistemas - Proyecto Final  2020 - 2021</p>
+        </footer>
+    
+    </form>
+</body>
+</html>

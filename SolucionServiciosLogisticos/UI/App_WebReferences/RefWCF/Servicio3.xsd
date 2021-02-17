@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/EC" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/EC" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Paquete">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodigoBarras" type="xs:int" />
+      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Empresa" nillable="true" type="tns:UsuarioEmpresa" />
+      <xs:element minOccurs="0" name="Peso" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Tipo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Paquete" nillable="true" type="tns:Paquete" />
+  <xs:complexType name="UsuarioEmpresa">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Usuario">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Direccion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Telefono" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UsuarioEmpresa" nillable="true" type="tns:UsuarioEmpresa" />
+  <xs:complexType name="Usuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Contrasenia" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NombreUsuario" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Usuario" nillable="true" type="tns:Usuario" />
+  <xs:complexType name="UsuarioEmpleado">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Usuario">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="HoraFin" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HoraInicio" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UsuarioEmpleado" nillable="true" type="tns:UsuarioEmpleado" />
+  <xs:complexType name="ArrayOfPaquete">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Paquete" nillable="true" type="tns:Paquete" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPaquete" nillable="true" type="tns:ArrayOfPaquete" />
+  <xs:complexType name="SolicitudEntrega">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DireccionDestinatario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Empleado" nillable="true" type="tns:UsuarioEmpleado" />
+      <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FechaEntrega" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ListaPaquete" nillable="true" type="tns:ArrayOfPaquete" />
+      <xs:element minOccurs="0" name="NombreDestinatario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroInterno" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SolicitudEntrega" nillable="true" type="tns:SolicitudEntrega" />
+  <xs:complexType name="ArrayOfSolicitudEntrega">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SolicitudEntrega" nillable="true" type="tns:SolicitudEntrega" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSolicitudEntrega" nillable="true" type="tns:ArrayOfSolicitudEntrega" />
+</xs:schema>
