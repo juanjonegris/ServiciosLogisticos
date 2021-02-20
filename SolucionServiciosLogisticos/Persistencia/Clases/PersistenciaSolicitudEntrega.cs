@@ -281,7 +281,7 @@ namespace Persistencia.Clases
 
 
 
-            List<SolicitudEntrega> listSolicitud = null;
+            List<SolicitudEntrega> listSolicitud = new List<SolicitudEntrega>();
 
             try
             {

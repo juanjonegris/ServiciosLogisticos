@@ -51,7 +51,7 @@
                 <tr>
                     <td class="auto-style1">&nbsp;</td>
                     <td class="auto-style2">
-                        <asp:Button ID="btnLimpiarFiltro" runat="server" Text="Limpiar Filtro" />
+                        <asp:Button ID="btnLimpiarFiltro" runat="server" Text="Limpiar Filtro" OnClick="btnLimpiarFiltro_Click" />
                     </td>
                     <td>&nbsp;</td>
                 </tr>
