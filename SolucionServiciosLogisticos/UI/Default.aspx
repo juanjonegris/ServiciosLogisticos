@@ -4,7 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />--%>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+
     <title></title>
     <style type="text/css">
         .auto-style1 {
@@ -30,10 +36,16 @@
 <body>
     <form id="form1" runat="server">
         <div class="container">
-            <h3>Solicitudes de Entrega <small>En Camino&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </small>
-                        <asp:HyperLink runat="server" NavigateUrl="~/Logueo.aspx">Iniciar sesión</asp:HyperLink>
+            <div class="row mt-5 align-items-center">
+            <div class="col align-items-center"><h3 class="text-center">Solicitudes de Entrega <small>En Camino&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </small>
                     </h3>
-
+            </div>
+            </div>
+            <div class="row mt-2 mb-5 align-items-center">
+                <div class="col text-center">
+                            <asp:HyperLink runat="server" class="btn btn-success" NavigateUrl="~/Logueo.aspx">Iniciar sesión</asp:HyperLink>
+                </div>
+            </div>
             <table style="width: 100%;">
                 <tr>
                     <td class="auto-style1">Filtrar por fecha</td>

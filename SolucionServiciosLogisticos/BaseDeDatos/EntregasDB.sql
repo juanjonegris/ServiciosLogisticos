@@ -44,7 +44,7 @@ CREATE TABLE UsuariosEmpleado (
 	FOREIGN KEY (NombreUsuario) REFERENCES Usuarios(NombreUsuario),
 	check (HoraFin > HoraInicio)
 )
-go
+GO
 
 CREATE TABLE SolicitudesDeEntrega (
 	NumeroInterno int not null Identity (1,1) Primary Key,
@@ -55,7 +55,7 @@ CREATE TABLE SolicitudesDeEntrega (
 	NombreUsuarioEmpleado varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpleado) REFERENCES UsuariosEmpleado(NombreUsuario)
 )
-go
+GO
 
 
 CREATE TABLE Paquetes (
@@ -628,65 +628,111 @@ go
 --	('Boris Prueba', '10:00', '18:00')
 --Go
 
-EXEC UsuariosEmpresaAlta 'Juanjo Prueba', 'abg23!', 'Juan Jose Negris', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'
+EXEC UsuariosEmpresaAlta 'JuanjoPrueba', 'abg23!', 'Juan Jose Negris', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'
 go
-EXEC UsuariosEmpresaAlta 'Mario Prueba', 'acb23@', 'Mario Puzo',  '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'
+EXEC UsuariosEmpresaAlta 'MarioPrueba', 'acb23@', 'Mario Puzo',  '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'
 go
-EXEC UsuariosEmpresaAlta 'James Prueba', 'adf23:', 'James Batdrock', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com'
+EXEC UsuariosEmpresaAlta 'JamesPrueba', 'adf23:', 'James Batdrock', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com'
 go
-EXEC UsuariosEmpleadoAlta 'Ximena Prueba', 'afs24,', 'Ximena Smith', '09:00', '17:00'
+EXEC UsuariosEmpleadoAlta 'XimenaPrueba', 'afs24,', 'Ximena Smith', '09:00', '17:00'
 go
-EXEC UsuariosEmpleadoAlta 'Boris Prueba', 'atr23!', 'Boris Hendrson',  '10:00', '18:00'
+EXEC UsuariosEmpleadoAlta 'BorisPrueba', 'atr23!', 'Boris Hendrson',  '10:00', '18:00'
 go
 
 
 INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado ) 
-VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941' ,'Ximena Prueba'),
-( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987' , 'Boris Prueba'),
-( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789' , 'Ximena Prueba'),
-( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871' , 'Boris Prueba'),
-( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972' , 'Ximena Prueba'),
-( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687' , 'Boris Prueba'),
-( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25' , 'Ximena Prueba'),
-( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789' , 'Boris Prueba'),
-( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'Ximena Prueba'),
-( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897' , 'Boris Prueba'),
-( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454' , 'Ximena Prueba'),
-( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974', 'Boris Prueba')
+VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941' ,'XimenaPrueba'),
+( DATEADD(DAY, 105, GETDATE()), 'JaimeRoss', 'Ansina 1987' , 'BorisPrueba'),
+( DATEADD(DAY, 98, GETDATE()), 'Peter Capusoto', '25 de mayo 789' , 'XimenaPrueba'),
+( DATEADD(DAY, 59, GETDATE()), 'Ingrid Lopez', 'Ciganda 871' , 'BorisPrueba'),
+( DATEADD(DAY, 67, GETDATE()), 'Sergio Dalmata', 'Miguelete 1972' , 'XimenaPrueba'),
+( DATEADD(DAY, 72, GETDATE()), 'Jaime Anibal Gizman', 'Enric el Xavi 687' , 'BorisPrueba'),
+( DATEADD(DAY, 120, GETDATE()), 'Vago President', 'Gianattasio km 25' , 'XimenaPrueba'),
+( DATEADD(DAY, 158, GETDATE()), 'Eulalia Sierra', '17 metros 789' , 'BorisPrueba'),
+( DATEADD(DAY, 78, GETDATE()), 'Kurtney Love', 'Gomensoro 1897', 'XimenaPrueba'),
+( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897' , 'BorisPrueba'),
+( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454' , 'XimenaPrueba'),
+( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974', 'BorisPrueba'),
+
+( DATEADD(DAY, 1, GETDATE()), 'Peter Capussoto', '18 de Julio 4978', 'BorisPrueba'),
+( DATEADD(DAY, 1, GETDATE()), 'Ana Maria Perez', 'Colonia 1320', 'BorisPrueba'),
+( DATEADD(DAY, 2, GETDATE()), 'Sonia Blaze', 'Roque Graseras 987', 'BorisPrueba'),
+( DATEADD(DAY, 5, GETDATE()), 'Pity Alvarez', 'Perez Castellanos 1254', 'BorisPrueba'),
+( DATEADD(DAY, 20, GETDATE()), 'Catty Ole', 'Sarandi 874', 'BorisPrueba'),
+( DATEADD(DAY, 21, GETDATE()), 'Juan Random', '18 de Julio 999', 'BorisPrueba'),
+( DATEADD(DAY, 21, GETDATE()), 'Serrana Doldan', 'Avda. Brasil 1958', 'BorisPrueba'),
+( DATEADD(DAY, 20, GETDATE()), 'Jose Perco', 'Bvar España 1879', 'BorisPrueba'),
+( DATEADD(DAY, 18, GETDATE()), 'Pablo Negris', 'Agraciada 3589', 'BorisPrueba'),
+( DATEADD(DAY, 22, GETDATE()), 'Carlos Negris', 'Yi 9874', 'BorisPrueba'),
+( DATEADD(DAY, 25, GETDATE()), 'Mauricio Caputti', 'Ciganda 871', 'BorisPrueba')
 Go
 
 INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
-VALUES ( 45454, 'fragil', 'Platos', 3200 , 'Juanjo Prueba'),
-( 487878, 'común', 'Caja de zapatos', 800 , 'Juanjo Prueba'),
-( 48788, 'fragil', 'IPad', 500 , 'Juanjo Prueba'),
-( 1254, 'bulto', 'Caja comun', 3000 , 'James Prueba'),
-( 8754, 'común', 'Mochila', 500 , 'Mario Prueba'),
-( 98712, 'fragil', 'TV', 5000 , 'James Prueba'),
-( 54458, 'bulto', 'Caja especial', 8500 , 'Juanjo Prueba'),
-( 54545, 'fragil', 'Parabrisas', 16000 , 'Juanjo Prueba'),
-( 885412, 'común', 'Caja comun', 3000 , 'Mario Prueba'),
-( 85471, 'fragil', 'Parlantes', 2200 , 'Juanjo Prueba'),
-( 66336, 'fragil', 'Auriculares', 300 , 'Juanjo Prueba'),
-( 85214, 'común', 'Jeans', 800 , 'Juanjo Prueba'),
-( 36255, 'fragil', 'Electrodomestico', 3200 , 'James Prueba'),
-( 87456, 'bulto', 'Caja comun', 3000 , 'Juanjo Prueba'),
-( 18744, 'común', 'Calzado', 1200 , 'Mario Prueba'),
-( 84484, 'fragil', 'Lentes Caja', 2000 , 'James Prueba'),
-( 78452, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
-( 23215, 'común', 'Sillas Plegables', 18000 , 'Juanjo Prueba'),
-( 12121, 'fragil', 'Mesa vidrio', 20000 , 'Juanjo Prueba'),
-( 22123, 'fragil', 'Heladera', 20500 , 'Juanjo Prueba'),
-( 36952, 'común', 'Juguetes caja', 3800 , 'James Prueba'),
-( 25321, 'fragil', 'Aticulos iluminacion', 6000 , 'Juanjo Prueba'),
-( 84645, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba'),
-( 231545, 'común', 'Mochila', 500 , 'Juanjo Prueba'),
-( 96325, 'fragil', 'Espejo', 6500 , 'Juanjo Prueba'),
-( 74145, 'bulto', 'Caja grande', 6000 , 'Juanjo Prueba'),
-( 23123, 'fragil', 'Cristaleria', 3500 , 'Juanjo Prueba'),
-( 84127, 'común', 'Remeras', 2000 , 'James Prueba'),
-( 96365, 'fragil', 'Apple TV', 600 , 'Juanjo Prueba'),
-( 35241, 'común', 'Championes bebe', 200 , 'Juanjo Prueba'),
-( 85695, 'bulto', 'Caja pequeña', 1500 , 'Mario Prueba')
+VALUES ( 45454, 'fragil', 'Platos', 3200 , 'JuanjoPrueba'),
+( 487878, 'común', 'Caja de zapatos', 800 , 'JuanjoPrueba'),
+( 48788, 'fragil', 'IPad', 500 , 'JuanjoPrueba'),
+( 1254, 'bulto', 'Caja comun', 3000 , 'JamesPrueba'),
+( 8754, 'común', 'Mochila', 500 , 'MarioPrueba'),
+( 98712, 'fragil', 'TV', 5000 , 'JamesPrueba'),
+( 54458, 'bulto', 'Caja especial', 8500 , 'JuanjoPrueba'),
+( 54545, 'fragil', 'Parabrisas', 16000 , 'JuanjoPrueba'),
+( 885412, 'común', 'Caja comun', 3000 , 'MarioPrueba'),
+( 85471, 'fragil', 'Parlantes', 2200 , 'JuanjoPrueba'),
+( 66336, 'fragil', 'Auriculares', 300 , 'JuanjoPrueba'),
+( 85214, 'común', 'Jeans', 800 , 'JuanjoPrueba'),
+( 36255, 'fragil', 'Electrodomestico', 3200 , 'JamesPrueba'),
+( 87456, 'bulto', 'Caja comun', 3000 , 'JuanjoPrueba'),
+( 18744, 'común', 'Calzado', 1200 , 'MarioPrueba'),
+( 84484, 'fragil', 'Lentes Caja', 2000 , 'JamesPrueba'),
+( 78452, 'bulto', 'Caja grande', 6000 , 'JuanjoPrueba'),
+( 23215, 'común', 'Sillas Plegables', 18000 , 'JuanjoPrueba'),
+( 12121, 'fragil', 'Mesa vidrio', 20000 , 'JuanjoPrueba'),
+( 22123, 'fragil', 'Heladera', 20500 , 'JuanjoPrueba'),
+( 36952, 'común', 'Juguetes caja', 3800 , 'JamesPrueba'),
+( 25321, 'fragil', 'Aticulos iluminacion', 6000 , 'JuanjoPrueba'),
+( 84645, 'bulto', 'Caja pequeña', 1500 , 'MarioPrueba'),
+( 231545, 'común', 'Mochila', 500 , 'JuanjoPrueba'),
+( 96325, 'fragil', 'Espejo', 6500 , 'JuanjoPrueba'),
+( 74145, 'bulto', 'Caja grande', 6000 , 'JuanjoPrueba'),
+( 23123, 'fragil', 'Cristaleria', 3500 , 'JuanjoPrueba'),
+( 84127, 'común', 'Remeras', 2000 , 'JamesPrueba'),
+( 96365, 'fragil', 'Apple TV', 600 , 'JuanjoPrueba'),
+( 35241, 'común', 'Championes bebe', 200 , 'JuanjoPrueba'),
+( 85695, 'bulto', 'Caja pequeña', 1500 , 'MarioPrueba'),
+( 5448, 'fragil', 'Caja pequeña', 1500 , 'JuanjoPrueba'),
+( 4545, 'fragil', 'Caja pequeña', 2500 , 'JuanjoPrueba'),
+( 5454, 'fragil', 'Caja pequeña', 800 , 'JuanjoPrueba'),
+( 5487, 'fragil', 'Caja pequeña', 800 , 'JuanjoPrueba'),
+( 987, 'bulto', 'Caja pequeña', 900 , 'JuanjoPrueba'),
+( 328, 'bulto', 'Caja pequeña', 3500 , 'JuanjoPrueba'),
+( 4936, 'común', 'Caja pequeña', 4500 , 'JuanjoPrueba'),
+( 7845, 'común', 'Caja pequeña', 1200 , 'JuanjoPrueba'),
+( 5489, 'común', 'Caja pequeña', 2158 , 'MarioPrueba'),
+( 374, 'bulto', 'Caja pequeña', 798 , 'MarioPrueba'),
+( 4544, 'bulto', 'Caja pequeña', 3650 , 'MarioPrueba'),
+( 698, 'común', 'Caja pequeña', 490 , 'MarioPrueba'),
+( 800, 'bulto', 'Caja pequeña', 1200 , 'MarioPrueba'),
+( 4527, 'común', 'Caja pequeña', 1000 , 'MarioPrueba'),
+( 2300, 'bulto', 'Caja pequeña', 1100 , 'JamesPrueba'),
+( 856, 'común', 'Caja pequeña', 1200 , 'JamesPrueba'),
+( 632, 'común', 'Caja pequeña', 500 , 'JamesPrueba'),
+( 946, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 7441, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 441, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+
+( 6895, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 8902, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 0321, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+
+( 5987, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+
+( 4444, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 2255, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+
+( 6902, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 2121, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 9092, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
+( 0236, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba')
 GO 
 
 INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
@@ -699,7 +745,18 @@ INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES
 (231545, 9), (96325, 9), (74145, 9),
 (23123, 10), (84127, 10), 
 (96365, 11), (35241, 11), 
-(85695, 12)
+(5448, 12), (4545, 12),(5454, 12), 
+(5487, 13), (987, 13), (328, 13),
+(374, 14), (4544, 14), (698, 14),
+(800, 15), (4527, 15),
+(2300, 16), (856, 16),(632, 16),
+(946, 17), (946, 17), (946, 17),
+(7441, 18),(441, 18),
+(6895, 19),(8902, 19),
+(0321, 20), (5987, 20),
+(4444, 21), (2255, 21),
+(6902, 22),(2121, 22),
+(9092, 23), (0236, 23)
 GO
 
 

@@ -28,6 +28,7 @@ namespace Persistencia.Clases
         internal void AltaSolicitudPaquete(int numeroInterno, int codigoBarras, SqlTransaction _miTransaccion)
         {
             SqlCommand oComando = new SqlCommand("SolicitudPaqueteAlta", _miTransaccion.Connection);
+            oComando.CommandType = CommandType.StoredProcedure;
             SqlParameter _code = new SqlParameter("@CodigodeBarras", codigoBarras);
             SqlParameter _intNum = new SqlParameter("@NumeroInterno", numeroInterno);
             SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
