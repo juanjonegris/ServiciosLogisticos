@@ -31,7 +31,7 @@ public partial class ABMEmpleado : System.Web.UI.Page
                 btnModificacion.Enabled = true;
                 btnBaja.Enabled = true;
                 btnBuscar.Enabled = false;
-                txtContra.Enabled = true;
+                txtContra.Enabled = false;
                 txtNombre.Enabled = true;
                 txtHoraFin.Enabled = true;
                 txtHoraInicio.Enabled = true;
@@ -177,6 +177,7 @@ public partial class ABMEmpleado : System.Web.UI.Page
             btnAlta.Enabled = false;
             btnModificacion.Enabled = false;
             btnAlta.Enabled = false;
+            btnBaja.Enabled = false;
         }
         catch (Exception ex)
         {

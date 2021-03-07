@@ -1,7 +1,6 @@
 USE master
 go
 
-
 ------ Creacion de una base de datos -------------------------------------------------------------------------
 
 IF exists(SELECT * FROM SysDataBases WHERE name='Entregas')
@@ -51,7 +50,7 @@ CREATE TABLE SolicitudesDeEntrega (
 	FechaDeEntrega date not null check (FechaDeEntrega >= GETDATE()),
 	NombreDestinatario varchar(50) not null,
 	DireccionDestinatario varchar(50) not null,
-	EstadoSolicitud varchar(20) not null Default 'En Depósito' check( EstadoSolicitud IN ('En Depósito', 'En Camino', 'Entregado' )),
+	EstadoSolicitud varchar(20) not null Default 'En Camino' check( EstadoSolicitud IN ('En Depósito', 'En Camino', 'Entregado' )),
 	NombreUsuarioEmpleado varchar(50) not null,
 	FOREIGN KEY (NombreUsuarioEmpleado) REFERENCES UsuariosEmpleado(NombreUsuario)
 )
@@ -77,40 +76,73 @@ CREATE TABLE SolicitudPaquete (
 )
 go 
 
+----------------------------- Creación de Roles ------------------------------
+GO 
+
+CREATE ROLE Publico 
+GO
+
+CREATE ROLE Empleado 
+GO
+
+CREATE ROLE Empresa 
+GO 
+
+
+
+
+-- creacion de usuarios
+
+USE master
+GO
+
+CREATE LOGIN [IIS APPPOOL\DefaultAppPool] FROM WINDOWS 
+GO
+
+USE Entregas
+GO
+
+CREATE USER [IIS APPPOOL\DefaultAppPool] FOR LOGIN [IIS APPPOOL\DefaultAppPool]
+GO
+
+EXEC sp_addrolemember @rolename='Publico', @membername=[IIS APPPOOL\DefaultAppPool]
+GO
+
+USE Entregas
+go
+
 
 
 ----------------------------- Stored Procedures -------------------------------
-
+GO
 
 CREATE PROCEDURE CambioContrasena @NombreUsuario varchar(50), @Contrasenia varchar (6) AS
 Begin
 	
-		Declare @VarSentencia varchar (200)
-		If Not Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario AND type='U')
-		return -1
-
 		if (Not Exists (Select * from Usuarios Where NombreUsuario = @NombreUsuario AND Activo = 1)) 
-			return -2
+			return -1
 		
-
+		Declare @VarSentencia varchar (200)
+		
+		if ( @NombreUsuario <> (Select CURRENT_USER  ))
+		return -2
+		--If Not Exists ( SELECT name FROM master.sys.server_principals WHERE name = @NombreUsuario AND type='S')
+		
+		Declare @oldContra varchar (6)
+		SET @oldContra = (Select Contrasenia From Usuarios Where NombreUsuario = @NombreUsuario)
+		
 		Update Usuarios Set Contrasenia = @Contrasenia  Where NombreUsuario = @NombreUsuario			
 		If (@@ERROR <> 0)
 		Begin
 			return -3
 		End
 		
-		Declare @oldContra varchar (6)
-		SET @oldContra = (Select Contrasenia From Usuarios Where NombreUsuario = @NombreUsuario)
-
-		EXEC sp_password @old = @oldContra, @new = @NombreUsuario, @loginame = @Contrasenia
-		
+		EXEC sp_password @old = @oldContra, @new =  @Contrasenia, @loginame = @NombreUsuario
+		Return 0
 End
-Go
+GO
 
 ---------- UsuariosEmpresa -------------------------
-
-
-
 
 Create Procedure UsuariosEmpresaBaja @NombreUsuario varchar(50) As
 Begin
@@ -289,7 +321,7 @@ Go
 
 --------- SolicitudesDeEntrega ------------
 
-ALTER Procedure SolicitudesDeEntregaAlta @FechaDeEntrega date, @NombreDestinatario varchar(50), @DireccionDestinatario varchar(50), @NombreUsuarioEmpleado varchar(50)  As
+Create Procedure SolicitudesDeEntregaAlta @FechaDeEntrega date, @NombreDestinatario varchar(50), @DireccionDestinatario varchar(50), @NombreUsuarioEmpleado varchar(50)  As
 Begin
 if (Not Exists(Select * From UsuariosEmpleado as ue INNER JOIN Usuarios as u on ue.NombreUsuario = u.NombreUsuario where u.NombreUsuario = @NombreUsuarioEmpleado AND u.Activo = 1)) 
 	Begin
@@ -412,78 +444,6 @@ End
 GO
 
 
-
-------------- Roles --------------------------
-
-
-CREATE ROLE Empresa 
-GO 
-
-GRANT EXECUTE ON CambioContrasena TO Empresa
-GO
-GRANT EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empresa
-GO
-GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Empresa
-GO
-GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Empresa
-GO
-GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Empresa
-GO
-
-
-CREATE ROLE Publico 
-GO 
-GRANT EXECUTE ON LogueoUsuarioEmpleado TO Publico
-GO
-GRANT EXECUTE ON LogueoUsuarioEmpresa TO Publico
-GO
-GRANT EXECUTE ON SolicitudesDeEntregaListar TO Publico
-GO
-GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Publico
-GO
-GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Publico
-GO
-GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Publico
-GO
-
-CREATE ROLE Empleado 
-GO
-GRANT EXECUTE TO Empleado
-GO
-REVOKE EXECUTE ON LogueoUsuarioEmpleado TO Empleado
-GO
-REVOKE EXECUTE ON LogueoUsuarioEmpresa TO Empleado
-GO
-REVOKE EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empleado
-GO
-GRANT EXECUTE ON SolicitudesDeEntregaListar TO Empleado
-GO
-GRANT ALTER ANY USER TO Empleado
-GO
-GRANT ALTER ANY ROLE TO Empleado
-GO
-
----- Creacion de usuarios con asignacion de roles -----------------
-
---creacion de usuarios
-
-USE master
-GO
-
-CREATE LOGIN [IIS APPPOOL\DefaultAppPool] FROM WINDOWS 
-GO
-
-USE Entregas
-GO
-
-CREATE USER [IIS APPPOOL\DefaultAppPool] FOR LOGIN [IIS APPPOOL\DefaultAppPool]
-GO
-
-EXEC sp_addrolemember @rolename='Publico', @membername=[IIS APPPOOL\DefaultAppPool]
-GO
-
-USE Entregas
-go
 
 
 Create Procedure UsuariosEmpresaAlta @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As
@@ -612,21 +572,56 @@ go
 
 
 
+------------- Permisos --------------------------
+
+
+GRANT EXECUTE ON CambioContrasena TO Empresa
+GO
+GRANT EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empresa
+GO
+GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Empresa
+GO
+GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Empresa
+GO
+GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Empresa
+GO
+
+
+ 
+GRANT EXECUTE ON LogueoUsuarioEmpleado TO Publico
+GO
+GRANT EXECUTE ON LogueoUsuarioEmpresa TO Publico
+GO
+GRANT EXECUTE ON SolicitudesDeEntregaListar TO Publico
+GO
+GRANT EXECUTE ON UsuariosEmpleadoBuscarTodos TO Publico
+GO
+GRANT EXECUTE ON PaquetesListadoPorSolicitud TO Publico
+GO
+GRANT EXECUTE ON UsuariosEmpresaBuscarTodos TO Publico
+GO
+
+
+
+REVOKE EXECUTE ON LogueoUsuarioEmpleado TO Empleado
+GO
+REVOKE EXECUTE ON LogueoUsuarioEmpresa TO Empleado
+GO
+REVOKE EXECUTE ON SolicitudesDeEntregaListarPorEmpresa TO Empleado
+GO
+GRANT EXECUTE ON SolicitudesDeEntregaListar TO Empleado
+GO
+GRANT EXECUTE ON CambioContrasena TO Empleado
+GO
+GRANT ALTER ANY USER TO Empleado
+GO
+GRANT ALTER ANY ROLE TO Empleado
+GO
+
+
 -------------------------- Insert Data --------------------------------
 
 
---INSERT Usuarios (NombreUsuario, Contrasenia, Nombre) VALUES ('Juanjo Prueba', 'abg23!', 'Juan Jose Negris'),
---	('Mario Prueba', 'acb23@', 'Mario Puzo'),('James Prueba', 'adf23:', 'James Batdrock'),
---	('Ximena Prueba', 'afs24,', 'Ximena Smith'),('Boris Prueba', 'atr23!', 'Boris Hendrson')
---Go
-
---INSERT UsuariosEmpresa (NombreUsuario, Telefono, Direccion, Email) VALUES ('Juanjo Prueba', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'),
---	('Mario Prueba', '098996654', '18 de Julio 1987', 'marioprueba@gmail.com'), ('James Prueba', '091971258', 'Elm Road 1875', 'jamesprueba@gmail.com')
---Go	
-
---INSERT UsuariosEmpleado (NombreUsuario, HoraInicio, HoraFin) VALUES ('Ximena Prueba', '09:00', '17:00'),
---	('Boris Prueba', '10:00', '18:00')
---Go
 
 EXEC UsuariosEmpresaAlta 'JuanjoPrueba', 'abg23!', 'Juan Jose Negris', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'
 go
@@ -638,7 +633,6 @@ EXEC UsuariosEmpleadoAlta 'XimenaPrueba', 'afs24,', 'Ximena Smith', '09:00', '17
 go
 EXEC UsuariosEmpleadoAlta 'BorisPrueba', 'atr23!', 'Boris Hendrson',  '10:00', '18:00'
 go
-
 
 INSERT SolicitudesDeEntrega ( FechaDeEntrega, NombreDestinatario, DireccionDestinatario, NombreUsuarioEmpleado ) 
 VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941' ,'XimenaPrueba'),
@@ -653,19 +647,20 @@ VALUES ( DATEADD(DAY, 105, GETDATE()), 'Ana Monterroso', 'Garibaldi 7941' ,'Xime
 ( DATEADD(DAY, 85, GETDATE()), 'Salome Salomon', 'Trapani 7897' , 'BorisPrueba'),
 ( DATEADD(DAY, 115, GETDATE()), 'Dario Bravo', 'Roy Mondle 5454' , 'XimenaPrueba'),
 ( DATEADD(DAY, 100, GETDATE()), 'Eduardo Scott', '18 de Julio 8974', 'BorisPrueba'),
-
-( DATEADD(DAY, 1, GETDATE()), 'Peter Capussoto', '18 de Julio 4978', 'BorisPrueba'),
-( DATEADD(DAY, 1, GETDATE()), 'Ana Maria Perez', 'Colonia 1320', 'BorisPrueba'),
-( DATEADD(DAY, 2, GETDATE()), 'Sonia Blaze', 'Roque Graseras 987', 'BorisPrueba'),
-( DATEADD(DAY, 5, GETDATE()), 'Pity Alvarez', 'Perez Castellanos 1254', 'BorisPrueba'),
-( DATEADD(DAY, 20, GETDATE()), 'Catty Ole', 'Sarandi 874', 'BorisPrueba'),
-( DATEADD(DAY, 21, GETDATE()), 'Juan Random', '18 de Julio 999', 'BorisPrueba'),
-( DATEADD(DAY, 21, GETDATE()), 'Serrana Doldan', 'Avda. Brasil 1958', 'BorisPrueba'),
-( DATEADD(DAY, 20, GETDATE()), 'Jose Perco', 'Bvar España 1879', 'BorisPrueba'),
-( DATEADD(DAY, 18, GETDATE()), 'Pablo Negris', 'Agraciada 3589', 'BorisPrueba'),
-( DATEADD(DAY, 22, GETDATE()), 'Carlos Negris', 'Yi 9874', 'BorisPrueba'),
-( DATEADD(DAY, 25, GETDATE()), 'Mauricio Caputti', 'Ciganda 871', 'BorisPrueba')
+( DATEADD(DAY, 1, GETDATE()), 'Peter Capussoto', '18 de Julio 4978', 'XimenaPrueba'),
+( DATEADD(DAY, 1, GETDATE()), 'Ana Maria Perez', 'Colonia 1320', 'XimenaPrueba'),
+( DATEADD(DAY, 2, GETDATE()), 'Sonia Blaze', 'Roque Graseras 987', 'XimenaPrueba'),
+( DATEADD(DAY, 5, GETDATE()), 'Pity Alvarez', 'Perez Castellanos 1254', 'XimenaPrueba'),
+( DATEADD(DAY, 20, GETDATE()), 'Catty Ole', 'Sarandi 874', 'XimenaPrueba'),
+( DATEADD(DAY, 21, GETDATE()), 'Juan Random', '18 de Julio 999', 'XimenaPrueba'),
+( DATEADD(DAY, 21, GETDATE()), 'Serrana Doldan', 'Avda. Brasil 1958', 'XimenaPrueba'),
+( DATEADD(DAY, 20, GETDATE()), 'Jose Perco', 'Bvar España 1879', 'XimenaPrueba'),
+( DATEADD(DAY, 18, GETDATE()), 'Pablo Negris', 'Agraciada 3589', 'XimenaPrueba'),
+( DATEADD(DAY, 22, GETDATE()), 'Carlos Negris', 'Yi 9874', 'XimenaPrueba'),
+( DATEADD(DAY, 25, GETDATE()), 'Mauricio Caputti', 'Ciganda 871', 'XimenaPrueba')
 Go
+
+Select * from Paquetes
 
 INSERT Paquetes( CodigodeBarras, Tipo, Descripcion, Peso, NombreUsuarioEmpresa )  
 VALUES ( 45454, 'fragil', 'Platos', 3200 , 'JuanjoPrueba'),
@@ -719,29 +714,26 @@ VALUES ( 45454, 'fragil', 'Platos', 3200 , 'JuanjoPrueba'),
 ( 946, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 7441, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 441, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
-
 ( 6895, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 8902, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 0321, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
-
 ( 5987, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
-
 ( 4444, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 2255, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
-
 ( 6902, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 2121, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 9092, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba'),
 ( 0236, 'bulto', 'Caja pequeña', 300 , 'JamesPrueba')
 GO 
 
+
 INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES 
-(45454,1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
+(45454, 1 ), (487878, 1), ( 48788, 1), ( 1254, 2), ( 8754, 2),( 98712, 2),( 54458, 3),( 54545, 3), 
 (885412, 4), (66336, 4), (85214, 4),
 (36255, 5), (87456, 5), (18744, 5),
 (84484, 6), (78452, 6),
 (23215, 7), (12121, 7), (22123, 7),
-(36952, 8), (25321,8), (84645,8),
+(36952, 8), (25321, 8), (84645, 8),
 (231545, 9), (96325, 9), (74145, 9),
 (23123, 10), (84127, 10), 
 (96365, 11), (35241, 11), 
@@ -750,7 +742,7 @@ INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES
 (374, 14), (4544, 14), (698, 14),
 (800, 15), (4527, 15),
 (2300, 16), (856, 16),(632, 16),
-(946, 17), (946, 17), (946, 17),
+ (946, 17), 
 (7441, 18),(441, 18),
 (6895, 19),(8902, 19),
 (0321, 20), (5987, 20),
@@ -758,6 +750,3 @@ INSERT SolicitudPaquete (CodigodeBarras, NumeroInterno) VALUES
 (6902, 22),(2121, 22),
 (9092, 23), (0236, 23)
 GO
-
-
-

@@ -303,17 +303,19 @@ namespace Persistencia.Clases
 
         public void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado)
         {
-            SqlConnection oConexion = new SqlConnection(Conexion.Cnn());
+            SqlConnection oConexion = new SqlConnection(Conexion.Cnn(ULogueado));
 
             SqlCommand oComando = new SqlCommand("CambioContrasena", oConexion);
             oComando.CommandType = CommandType.StoredProcedure;
 
             SqlParameter _nomUsu = new SqlParameter("@NombreUsuario", ULogueado.NombreUsuario);
+            //SqlParameter _contraV = new SqlParameter("@ContraseniaVieja", ULogueado.Contrasenia);
             SqlParameter _contra = new SqlParameter("@Contrasenia", pNuevaContrasenia);
             SqlParameter _Retorno = new SqlParameter("@Retorno", SqlDbType.Int);
             _Retorno.Direction = ParameterDirection.ReturnValue;
 
             oComando.Parameters.Add(_nomUsu);
+            //oComando.Parameters.Add(_contraV);
             oComando.Parameters.Add(_contra);
             oComando.Parameters.Add(_Retorno);
             
@@ -329,7 +331,7 @@ namespace Persistencia.Clases
                     throw new Exception("No existe el usuario en la Base de Datos");
                 if (returned_value == -2)
                     throw new Exception("No existe el usuario cuya contrseña intenta modificar");
-                if (returned_value == -3)
+                if (returned_value != 0)
                     throw new Exception("Ha ocurrido un error al intentar modificar la contraseña");
 
             }

@@ -93,5 +93,10 @@ namespace Logica.Clases
 
             return _usuario;
         }
+
+        public void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado)
+        {
+           Persistencia.Fabrica.GetPUEM().CambioContrasena(pNuevaContrasenia, ULogueado);
+        }
     }
 }

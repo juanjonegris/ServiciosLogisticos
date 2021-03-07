@@ -50,6 +50,7 @@ public partial class AltaSolicituddeEntrega : System.Web.UI.Page
 
 
             lista_paq_sin_asignar.RemoveAt(grvPaquetes.SelectedIndex);
+            Session["Paquetes"] = lista_paq_sin_asignar;
             grvPaquetes.DataSource = lista_paq_sin_asignar;
             grvPaquetes.DataBind();
             btnAgregar.Enabled = true;
@@ -94,10 +95,23 @@ public partial class AltaSolicituddeEntrega : System.Web.UI.Page
         {
             new ServicioClient().AgregarSolicitudEntrega(sol_ent, sol_ent.Empleado);
             lblMensaje.Text = "Solicitud de entrega agregada con éxito";
+            txtNombre.Text = "";
+            txtDireccion.Text = "";
+            txtFecha.Text = "";
+            List<Paquete> lista_paq_sin_asignar = (List<Paquete>)Session["Paquetes"];
+            grvPaquetes.DataSource = lista_paq_sin_asignar;
+            grvPaquetes.DataBind();
+            btnAgregar.Enabled = false;
+            Session["PaqueteSeleccion"] = new List<Paquete>();
+            List<Paquete> lista_paq_asignados = (List<Paquete>)Session["PaqueteSeleccion"];
+            grvAsignados.DataSource = lista_paq_asignados;
+            grvAsignados.DataBind();
         }
         catch (Exception ex)
         {
             lblMensaje.Text = ex.Message;
         }
     }
+
+    
 }

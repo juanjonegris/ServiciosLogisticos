@@ -25,8 +25,31 @@
     <table style="width:100%;">
         <tr>
             <td class="auto-style1">&nbsp;</td>
-            <td class="auto-style2">Alta de Paquetes</td>
+            <td class="auto-style2 h3">Alta de Paquetes</td>
             <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="auto-style1">&nbsp;</td>
+            <td class="auto-style2 h6">Empresa</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="auto-style1">Nombre de Usuario</td>
+            <td class="auto-style2">
+                <asp:TextBox ID="txtNombreUsuario" runat="server"></asp:TextBox>
+            </td>
+        <tr>
+            <td>
+                <asp:Button ID="btnBuscarUsuario" runat="server" OnClick="btnBuscarUsuario_Click" Text="Buscar Empresa" Width="150px" class="btn btn-success" />
+            </td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="auto-style1"></td>
+            <td class="auto-style2">
+                <asp:Label ID="lblNombreEmpresa" runat="server"></asp:Label>
+            </td>
+            <td></td>
         </tr>
         <tr>
             <td class="auto-style1">Codigo de Barras</td>
@@ -60,29 +83,7 @@
             </td>
             <td>&nbsp;</td>
         </tr>
-        <tr>
-            <td class="auto-style1">&nbsp;</td>
-            <td class="auto-style2">Empresa</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td class="auto-style1">Nombre de Usuario</td>
-            <td class="auto-style2">
-                <asp:TextBox ID="txtNombreUsuario" runat="server"></asp:TextBox>
-            </td>
-            <td>
-                <asp:Button ID="btnBuscarUsuario" runat="server" OnClick="btnBuscarUsuario_Click" Text="Buscar" Width="68px" />
-            </td>
-        </tr>
-        <tr>
-            <td class="auto-style1">Nombre Empresa</td>
-            <td class="auto-style2">
-                <asp:Label ID="lblNombreEmpresa" runat="server"></asp:Label>
-            </td>
-            <td>
-                <asp:Button ID="btnLimpiar" runat="server" OnClick="btnLimpiar_Click" Text="Limpiar" />
-            </td>
-        </tr>
+        
         <tr>
             <td class="auto-style1">&nbsp;</td>
             <td class="auto-style2">&nbsp;</td>
@@ -91,9 +92,11 @@
         <tr>
             <td class="auto-style1">&nbsp;</td>
             <td class="auto-style2">
-                <asp:Button ID="btnAlta" runat="server" Enabled="False" OnClick="btnAlta_Click" Text="Ingresar" />
+                <asp:Button ID="btnAlta" runat="server" Enabled="False" OnClick="btnAlta_Click" Text="Ingresar" class="btn btn-success" />
             </td>
-            <td>&nbsp;</td>
+            <td>
+                <asp:Button ID="btnLimpiar" runat="server" OnClick="btnLimpiar_Click" Text="Limpiar" class="btn btn-success"/>
+            </td>
         </tr>
         <tr>
             <td class="auto-style1">&nbsp;</td>

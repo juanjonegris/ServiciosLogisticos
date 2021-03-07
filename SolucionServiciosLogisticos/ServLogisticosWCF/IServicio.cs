@@ -67,6 +67,9 @@ namespace ServLogisticosWCF
         [OperationContract]
         Usuario LogueoUsuario(string pNombreUsuario, string pContrasenia);
 
+        [OperationContract]
+        void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado);
+
         #endregion
     }
 }

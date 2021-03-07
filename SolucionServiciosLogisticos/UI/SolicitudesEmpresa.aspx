@@ -14,7 +14,7 @@
     <table style="width:100%;">
         <tr>
             <td class="auto-style2">&nbsp;</td>
-            <td class="auto-style1">Solicitudes de mi Empresa</td>
+            <td class="auto-style1 h3">Solicitudes de mi Empresa</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
@@ -25,16 +25,16 @@
         <tr>
             <td class="auto-style2">Filtro Ultimo mes</td>
             <td class="auto-style1">
-                <asp:Button ID="btnMes" runat="server" OnClick="btnMes_Click" Text="Último mes" />
+                <asp:Button ID="btnMes" runat="server" OnClick="btnMes_Click" Text="Último mes" class="btn btn-success" />
             </td>
             <td>
-                <asp:Button ID="btnLimpiar" runat="server" OnClick="btnLimpiar_Click" Text="Limpiar Filtro" />
+                <asp:Button ID="btnLimpiar" runat="server" OnClick="btnLimpiar_Click" Text="Limpiar Filtro" class="btn btn-success" />
             </td>
         </tr>
         <tr>
             <td class="auto-style2">Filtro mes/año</td>
             <td class="auto-style1">
-                <asp:Button ID="btnMesAño" runat="server" OnClick="btnMesAño_Click" Text="Solicitudes /mes-año" />
+                <asp:Button ID="btnMesAño" runat="server" OnClick="btnMesAño_Click" Text="Solicitudes /mes-año" class="btn btn-success" />
             </td>
             <td>&nbsp;</td>
         </tr>
@@ -54,7 +54,14 @@
         <tr>
             <td class="auto-style2">&nbsp;</td>
             <td class="auto-style1">
-                <asp:GridView ID="grvSolEmpresa" runat="server">
+                <asp:GridView ID="grvSolEmpresa" runat="server" AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:BoundField DataField="DireccionDestinatario" HeaderText="Dirección del Destinatario" />
+                        <asp:BoundField DataField="Estado" HeaderText="Estado" />
+                        <asp:BoundField DataField="FechaEntrega" HeaderText="Fecha de Entrega" />
+                        <asp:BoundField DataField="NombreDestinatario" HeaderText="Nombre del Destinatario" />
+                        <asp:BoundField DataField="NumeroInterno" HeaderText="Numero Interno" />
+                    </Columns>
                 </asp:GridView>
             </td>
             <td>&nbsp;</td>

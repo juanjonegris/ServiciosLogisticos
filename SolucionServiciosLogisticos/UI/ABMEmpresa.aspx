@@ -14,7 +14,7 @@
     <table style="width:100%;">
         <tr>
             <td class="auto-style1">&nbsp;</td>
-            <td class="auto-style2">Gestión de Empresas</td>
+            <td class="auto-style2 h3">Gestión de Empresas</td>
             <td>&nbsp;</td>
         </tr>
         <tr>

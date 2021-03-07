@@ -91,6 +91,12 @@
   <wsdl:message name="IServicio_LogueoUsuario_OutputMessage">
     <wsdl:part name="parameters" element="tns:LogueoUsuarioResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicio_CambioContrasena_InputMessage">
+    <wsdl:part name="parameters" element="tns:CambioContrasena" />
+  </wsdl:message>
+  <wsdl:message name="IServicio_CambioContrasena_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CambioContrasenaResponse" />
+  </wsdl:message>
   <wsdl:portType name="IServicio">
     <wsdl:operation name="AgregarPaquete">
       <wsdl:input wsaw:Action="http://tempuri.org/IServicio/AgregarPaquete" message="tns:IServicio_AgregarPaquete_InputMessage" />
@@ -147,6 +153,10 @@
     <wsdl:operation name="LogueoUsuario">
       <wsdl:input wsaw:Action="http://tempuri.org/IServicio/LogueoUsuario" message="tns:IServicio_LogueoUsuario_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServicio/LogueoUsuarioResponse" message="tns:IServicio_LogueoUsuario_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CambioContrasena">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServicio/CambioContrasena" message="tns:IServicio_CambioContrasena_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServicio/CambioContrasenaResponse" message="tns:IServicio_CambioContrasena_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IServicio" type="tns:IServicio">
@@ -270,6 +280,15 @@
     </wsdl:operation>
     <wsdl:operation name="LogueoUsuario">
       <soap:operation soapAction="http://tempuri.org/IServicio/LogueoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambioContrasena">
+      <soap:operation soapAction="http://tempuri.org/IServicio/CambioContrasena" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

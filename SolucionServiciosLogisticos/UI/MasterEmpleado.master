@@ -21,26 +21,51 @@
             <header>
                 <div id="master-container">
                     <div>
-                        <nav>
-                            <ul>
-                                <li><a href="ABMEmpleado.aspx">Gestión de Empleados</a></li>
-                                <li><a href="ABMEmpresa.aspx">Gestión de Empresas</a></li>
-                                <li><a href="AltaPaquetes.aspx">Ingreso de Paquetes</a></li>
-                                <li><a href="AltaSolicituddeEntrega.aspx">Alta Solicitud de Entrega</a></li>
-                                <li><a href="CambioEstadoSolicitud.aspx">Cambio de estado de Solicitudes</a></li>
-                                <li><a href="ListadoPaquetes.aspx">Paquetes sin asignar</a></li>
-                            </ul>
-                        </nav>
-                        <div id="bienvenida">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                              <a class="navbar-brand" href="#">JJN S. Logísticos</a>
+                              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                              </button>
+                              <div class="navbar" id="navbarNav">
+                                <ul class="navbar-nav">
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="ABMEmpleado.aspx">Gestión de Empleados <span class="sr-only">(current)</span></a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="ABMEmpresa.aspx">Gestión de Empresas</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="AltaPaquetes.aspx">Ingreso de Paquetes</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="AltaSolicituddeEntrega.aspx">Alta Solicitud de Entrega</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link"  href="CambioEstadoSolicitud.aspx">Cambio de estado de Solicitudes</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link " href="ListadoPaquetes.aspx">Paquetes sin Solicitud</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link " href="CambioContraEmpleado.aspx">Cambio de Contraseña</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </nav>
+                      
+                        <div class="col-12 text-left" id="bienvenida">
+                            <div class="col-md-6"> 
                             <p>
                                 Bienvenido  
                             </p>
-                            <asp:Label ID="lblBienvenido" runat="server" Text="Label"></asp:Label>
-                            <p>a Bios Classifieds.</p>
+                                <asp:Label ID="lblBienvenido" runat="server" Text="Label"></asp:Label>
+                                <p>a Bios Classifieds.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" class="btn btn-primary stretched-link" />
+                            </div>
                         </div>
-                        <div>
-                            <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" />
-                        </div>
+                        
                     </div>
                     </div>
             </header>
@@ -48,14 +73,15 @@
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
         
         </asp:ContentPlaceHolder>
-                      
-        </div>
-    <footer>
+        <footer>
         <p>
-            <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpleado.aspx">Volver</asp:HyperLink>
+            <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpleado.aspx" class="btn btn-primary stretched-link">Volver</asp:HyperLink>
         </p>
         <p>&copy Analista de Sistemas - Proyecto Final  2020 - 2021</p>
     </footer>
+                      
+        </div>
+    
     </form>
 </body>
 </html>

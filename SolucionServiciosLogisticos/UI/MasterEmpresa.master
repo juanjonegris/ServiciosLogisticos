@@ -21,7 +21,22 @@
             <header>
                 <div id="master-container">
                     <div> 
-                        <p><a href="SolicitudesEmpresa.aspx">Mis Solicitudesa de Entrega</a></p>
+                         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                              <a class="navbar-brand" href="#">JJN S. Logísticos</a>
+                              <%--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                              </button>--%>
+                              <div class="navbar" id="navbarNav">
+                                <ul class="navbar-nav">
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="SolicitudesEmpresa.aspx">Mis Solicitudesa de Entrega</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="CambioContrasena.aspx">Cambiar Contraseña</a>
+                                  </li>
+                                </ul>
+                              </div>
+                         </nav>
                         <div id="bienvenida">
                             <p>
                                 Bienvenido  
@@ -30,7 +45,7 @@
                             <p>a Servicios Logisticos.</p>
                         </div>
                         <div>
-                            <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" />
+                            <asp:Button ID="btnDestroySession" runat="server" Text="Cerrar Sesión" OnClick="btnDestroySession_Click" class="btn btn-primary stretched-link" />
                         </div>
                     </div>
                    </div> 
@@ -41,11 +56,11 @@
             
         <footer>
             <p>
-                <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpresa.aspx">Volver</asp:HyperLink>
+                <asp:HyperLink ID="hplMaster" runat="server" NavigateUrl="~/HomeEmpresa.aspx" class="btn btn-primary stretched-link">Volver</asp:HyperLink>
             </p>
             <p>&copy Analista de Sistemas - Proyecto Final  2020 - 2021</p>
         </footer>
-    
+    </div>
     </form>
 </body>
 </html>

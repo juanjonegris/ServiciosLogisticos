@@ -14,13 +14,19 @@
     <table style="width:100%;">
         <tr>
             <td class="auto-style1">&nbsp;</td>
-            <td class="auto-style2">Listado de Paquetes sin Solicitud de Entrega Asignada</td>
+            <td class="auto-style2 h3">Listado de Paquetes sin Solicitud de Entrega Asignada</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
             <td class="auto-style1">&nbsp;</td>
             <td class="auto-style2">
-                <asp:GridView ID="grvListPaquetes" runat="server">
+                <asp:GridView ID="grvListPaquetes" runat="server" AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:BoundField DataField="CodigoBarras" HeaderText="Código de Barras" />
+                        <asp:BoundField DataField="Descripcion" HeaderText="Descripción" />
+                        <asp:BoundField DataField="Peso" HeaderText="Peso" />
+                        <asp:BoundField DataField="Tipo" HeaderText="Tipo de Paquete" />
+                    </Columns>
                 </asp:GridView>
             </td>
             <td>&nbsp;</td>

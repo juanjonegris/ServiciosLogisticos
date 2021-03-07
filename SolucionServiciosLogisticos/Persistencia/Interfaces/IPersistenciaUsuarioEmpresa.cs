@@ -14,6 +14,6 @@ namespace Persistencia.Interfaces
         void ModificarUsuarioEmpresa(UsuarioEmpresa UEM, UsuarioEmpleado UEMLogueado);
         UsuarioEmpresa BuscarUsuarioEmpresa(string pNombreUsuario, UsuarioEmpleado ULogueado);
         UsuarioEmpresa LogueoUsuarioEmpresa(string pNombreUsuario, string pContrasenia);
-
+        void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado);
     }
 }

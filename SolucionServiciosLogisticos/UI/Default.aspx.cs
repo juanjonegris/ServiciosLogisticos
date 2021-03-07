@@ -27,19 +27,6 @@ public partial class _Default : System.Web.UI.Page
                 lblMensaje.Text = ex.Message;
             }
         } 
-        //else
-        //{
-        //    try
-        //    {
-        //        grvSolicitudes.DataSource = Session["SolicitudLista"];
-        //        grvSolicitudes.DataBind();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        lblMensaje.Text = ex.Message;
-        //    }
-        //}
-
     }
 
     protected void desplegarEntregas(XElement _documento)
@@ -80,23 +67,32 @@ public partial class _Default : System.Web.UI.Page
 
     protected void btnFiltrar_Click(object sender, EventArgs e)
     {
-        DateTime fecha = Convert.ToDateTime(txtFilDia.Text + "/" + txtFilMes.Text + "/" + txtFilAnio.Text);
-        XElement _documento = (XElement)Session["SolicitudesEntregas"];
-        
-        List<object> solFil = (from unaS in (_documento.Elements("SolicitudEntrega"))
-                               where Convert.ToDateTime(unaS.Element("FechaEntrega").Value).Date == fecha.Date
-                               select new
-                               {
-                                   NumeroInterno = unaS.Element("NumeroInterno").Value,
-                                   FechaEntrega = unaS.Element("FechaEntrega").Value,
-                                   NombreDestinatario = unaS.Element("NombreDestinatario").Value,
-                                   DireccionDestinatario = unaS.Element("DireccionDestinatario").Value,
-                                   NombreEmpleado = unaS.Element("UsuarioEmpleado").Element("NombreUsuario")
-                               }
-                                    ).ToList<object>();
+        try
+        {
+            DateTime fecha = Convert.ToDateTime(txtFilDia.Text + "/" + txtFilMes.Text + "/" + txtFilAnio.Text);
+            XElement _documento = (XElement)Session["SolicitudesEntregas"];
 
-        grvSolicitudes.DataSource = solFil;
-        grvSolicitudes.DataBind();
+            List<object> solFil = (from unaS in (_documento.Elements("SolicitudEntrega"))
+                                   where Convert.ToDateTime(unaS.Element("FechaEntrega").Value).Date == fecha.Date
+                                   select new
+                                   {
+                                       NumeroInterno = unaS.Element("NumeroInterno").Value,
+                                       FechaEntrega = unaS.Element("FechaEntrega").Value,
+                                       NombreDestinatario = unaS.Element("NombreDestinatario").Value,
+                                       DireccionDestinatario = unaS.Element("DireccionDestinatario").Value,
+                                       NombreEmpleado = unaS.Element("UsuarioEmpleado").Element("NombreUsuario")
+                                   }
+                                        ).ToList<object>();
+
+            grvSolicitudes.DataSource = solFil;
+            grvSolicitudes.DataBind();
+
+        }
+        catch (Exception ex)
+        {
+
+            lblMensaje.Text = ex.Message;
+        }
     }
 
     protected void btnLimpiarFiltro_Click(object sender, EventArgs e)
@@ -106,8 +102,11 @@ public partial class _Default : System.Web.UI.Page
             txtFilDia.Text = "";
             txtFilMes.Text = "";
             txtFilAnio.Text = "";
-            XElement _documento = (XElement)Session["SolicitudesEntregas"];
-            desplegarEntregas(_documento);
+            //XElement _documento = (XElement)Session["SolicitudesEntregas"];
+            //desplegarEntregas(_documento);
+            List<object> solEnt = (List<object>)Session["SolicitudLista"];
+            grvSolicitudes.DataSource = solEnt;
+            grvSolicitudes.DataBind();
         }
         catch (Exception ex)
         {

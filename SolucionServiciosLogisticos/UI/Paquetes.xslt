@@ -5,24 +5,32 @@
   <!--xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"-->
   <xsl:template match="/">
 
-    <table>
+    <table >
         <xsl:for-each select="SolicitudEntrega/Paquete">
-          <tr>
-            <td style="background-color:#008800;padding:4px;font-size:15pt;
-                                  font-weight:bold;color:white">
+          <tr style="border: 1px solid gray; padding-bottom: 15px; margin-bottom:30px;">
+            <td style="background-color:red;padding:4px;font-size:12pt; color:white">
               Codigo de barras: <xsl:value-of select="CodigoBarras"/>
             </td>
-            <td style="margin-left:20px;margin-bottom:1em;font-size:15pt">
-              Tipo: <xsl:value-of select="Tipo"/>
+          </tr>
+          <tr>
+            <td style="margin-left:20px;margin-bottom:1em;font-size:12pt;">
+              <b> Tipo: </b> <xsl:value-of select="Tipo"/>
             </td>
-            <td style="margin-left:20px;margin-bottom:1em;font-size:15pt">
-              Descripción: <xsl:value-of select="Descripcion"/>
+          </tr>
+          <tr>
+            <td style="margin-left:20px;margin-bottom:1em;font-size:12pt;">
+              <b>Descripción: </b>
+              <xsl:value-of select="Descripcion"/>
             </td>
-            <td style="margin-left:20px;margin-bottom:1em;font-size:15pt">
-              Peso: <xsl:value-of select="Peso"/>
+          </tr>
+          <tr>
+            <td style="margin-left:20px;margin-bottom:1em;font-size:12pt;">
+              <b>Peso: </b> <xsl:value-of select="Peso"/>
             </td>
-            <td style="margin-left:20px;margin-bottom:1em;font-size:15pt">
-              Nombre del Empleado: <xsl:value-of select="UsuarioEmpresa/Nombre"/>
+            </tr>
+          <tr>
+            <td style="margin-left:20px;margin-bottom:1em;font-size:12pt;">
+              <b>Nombre del Empleado: </b> <xsl:value-of select="UsuarioEmpresa/Nombre"/>
             </td>
           </tr>
         </xsl:for-each>

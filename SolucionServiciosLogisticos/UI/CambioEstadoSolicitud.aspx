@@ -25,9 +25,14 @@
         <tr>
             <td class="auto-style1">&nbsp;</td>
             <td class="auto-style2">
-                <asp:GridView ID="grvSolEnt" runat="server" OnSelectedIndexChanged="grvSolEnt_SelectedIndexChanged">
+                <asp:GridView ID="grvSolEnt" runat="server" OnSelectedIndexChanged="grvSolEnt_SelectedIndexChanged" AutoGenerateColumns="False">
                     <Columns>
                         <asp:CommandField HeaderText="Cambiar Estado" SelectText="Cambiar" ShowSelectButton="True" />
+                        <asp:BoundField DataField="DireccionDestinatario" HeaderText="Dirección Destinatario" />
+                        <asp:BoundField DataField="Estado" HeaderText="Estado" />
+                        <asp:BoundField DataField="FechaEntrega" HeaderText="Fecha de Entrega" />
+                        <asp:BoundField DataField="NombreDestinatario" HeaderText="Nombre del Destinatario" />
+                        <asp:BoundField DataField="NumeroInterno" HeaderText="Numero Interno" />
                     </Columns>
                 </asp:GridView>
             </td>

@@ -3,7 +3,7 @@ use Entregas
 
 -- alta empleado
 DECLARE @r int
-EXEC @r = UsuariosEmpresaAlta 'Serrana Prueba' , 'aod99!', 'Serrrana Merlo', '098871058', 'Tucuman 1987', 'serranamerlo@gmail.com'
+EXEC @r = UsuariosEmpresaAlta 'JuanjoPrueba', 'abg23!', 'Juan Jose Negris', '098978987', 'Famailla 3293', 'juanjoprueba@gmail.com'
 SELECT @r 'Retorno', 
 	CASE @r
 	WHEN 1 THEN 'Se ha creado con exito'
@@ -25,6 +25,20 @@ SELECT @r 'Retorno',
 	WHEN -2 THEN 'Ha ocurrido un problema'	
 END 'Mensaje'
 GO
+
+DECLARE @r int
+EXEC @r = CambioContrasena 'XimenaPrueba', 'add95..','hgd95.'
+--EXEC CambioContrasena 'XimenaPrueba', 'abc95.'
+
+SELECT @r 'Retorno', 
+	CASE @r
+	WHEN -1 THEN 'No existe ese usuario sql'
+	WHEN -2 THEN 'No existe ese usuario'
+	WHEN 0 THEN 'Cambiado'	
+END 'Mensaje'
+GO
+
+select * from Usuarios
 
 
 Create Procedure UsuariosEmpresaModificar @NombreUsuario varchar(50), @Contrasenia varchar(6), @Nombre varchar(70), @Telefono varchar(9), @Direccion varchar(50), @Email varchar(50)  As

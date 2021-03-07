@@ -10,11 +10,20 @@ public partial class MasterEmpleado : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if ( ! (Session["Usuario"] is UsuarioEmpleado ))
-            Response.Redirect("Default.aspx");
+        try
+        {
+            if (!(Session["Usuario"] is UsuarioEmpleado))
+                Response.Redirect("Default.aspx");
 
-        UsuarioEmpleado empleado = (UsuarioEmpleado)Session["Usuario"];
-        lblBienvenido.Text = empleado.Nombre;
+            UsuarioEmpleado empleado = (UsuarioEmpleado)Session["Usuario"];
+            lblBienvenido.Text = empleado.Nombre;
+        }
+        catch (Exception ex)
+        {
+
+            lblBienvenido.Text = ex.Message;
+        }
+        
 
 
     }

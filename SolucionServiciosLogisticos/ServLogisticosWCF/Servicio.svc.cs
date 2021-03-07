@@ -97,7 +97,12 @@ namespace ServLogisticosWCF
         {
             return (Fabrica.GetLU().LogueoUsuario(pNombreUsuario, pContrasenia));
         }
-        
+
+        void IServicio.CambioContrasena(string pNuevaContrasenia, Usuario ULogueado)
+        {
+            Fabrica.GetLU().CambioContrasena(pNuevaContrasenia, ULogueado);
+        }
+
         #endregion
     }
 }

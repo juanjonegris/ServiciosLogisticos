@@ -13,28 +13,30 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
     <div class="container">
-        <h3>Loguin</h3>
-        Nombre de usuario:
-            <asp:TextBox ID="txtNombreUsr" runat="server"></asp:TextBox>
-&nbsp;&nbsp;&nbsp;&nbsp;
-        
-            &nbsp;<br />
-        Contraseña: &nbsp;<asp:TextBox ID="txtContra" runat="server"></asp:TextBox>
-            <br />
-        <br />
-            <asp:Button ID="btnEnviar" runat="server" Text="Enviar" OnClick="btnEnviar_Click" />
-            <br />
-        <br />
-            <asp:Label ID="lblMensaje" runat="server"></asp:Label>
-            <br />
-        <br />
-            <asp:HyperLink ID="hplLogueo" runat="server" NavigateUrl="~/Default.aspx">Volver</asp:HyperLink>
-       
+            <div class="row mt-5 align-items-center">
+            <div class="col align-items-center">
+                <form id="form1" runat="server">
+                
+                    <h3 class="my-5" >Login</h3>
+                    <div class="form-row my-2">
+                        <label class="mr-1" >Nombre de usuario: </label> 
+                        <asp:TextBox ID="txtNombreUsr" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="form-row">
+                      <label class="mr-1" >Contraseña: </label> <asp:TextBox ID="txtContra" runat="server" Type="password"></asp:TextBox>
+                    </div>
+                    <div class="my-5"  >
+                        <asp:Button ID="btnEnviar" runat="server" Text="Enviar" OnClick="btnEnviar_Click" class="btn btn-outline-success mt-5" />
+                    </div>
 
+                        <asp:Label ID="lblMensaje" runat="server"></asp:Label>
+                        <br />
+                    <br />
+                        <asp:HyperLink ID="hplLogueo" runat="server" NavigateUrl="~/Default.aspx" class="btn btn-primary stretched-link">Volver</asp:HyperLink>        
+                </form>
+        </div>
     </div>
-         
-    </form>
+</div>
 </body>
 </html>

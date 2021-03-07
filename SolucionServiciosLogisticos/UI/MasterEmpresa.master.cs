@@ -10,11 +10,19 @@ public partial class MasterEmpresa : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!(Session["Usuario"] is UsuarioEmpresa))
-            Response.Redirect("Default.aspx");
+        try
+        {
+            if (!(Session["Usuario"] is UsuarioEmpresa))
+                Response.Redirect("Default.aspx");
 
-        UsuarioEmpresa empresa = (UsuarioEmpresa)Session["Usuario"];
-        lblBienvenido.Text = empresa.Nombre;
+            UsuarioEmpresa empresa = (UsuarioEmpresa)Session["Usuario"];
+            lblBienvenido.Text = empresa.Nombre;
+        }
+        catch (Exception ex)
+        {
+            lblBienvenido.Text = ex.Message;
+        }
+        
     }
 
     protected void btnDestroySession_Click(object sender, EventArgs e)

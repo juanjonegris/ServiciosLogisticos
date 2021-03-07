@@ -193,4 +193,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CambioContrasena">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pNuevaContrasenia" nillable="true" type="xs:string" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/EC" minOccurs="0" name="ULogueado" nillable="true" type="q26:Usuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CambioContrasenaResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

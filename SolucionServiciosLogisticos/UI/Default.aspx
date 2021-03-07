@@ -20,103 +20,62 @@
         .auto-style2 {
             width: 368px;
         }
-        .auto-style3 {
-            width: 311px;
-            height: 23px;
-        }
-        .auto-style4 {
-            width: 368px;
-            height: 23px;
-        }
-        .auto-style5 {
-            height: 23px;
-        }
-    </style>
+        </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div class="container">
+    <div class="container-fluid">
+    <form id="form1" runat="server" class="col-12">
+        
             <div class="row mt-5 align-items-center">
-            <div class="col align-items-center"><h3 class="text-center">Solicitudes de Entrega <small>En Camino&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </small>
-                    </h3>
+                <div class="col align-items-center"><h3 class="text-left">Solicitudes de Entrega <small>En Camino</small></h3></div>
             </div>
-            </div>
-            <div class="row mt-2 mb-5 align-items-center">
-                <div class="col text-center">
-                            <asp:HyperLink runat="server" class="btn btn-success" NavigateUrl="~/Logueo.aspx">Iniciar sesión</asp:HyperLink>
+            <div class="row mt-2 mb-5 align-items-left">
+                <div class="col text-left">
+                    <asp:HyperLink runat="server" class="btn btn-outline-success" NavigateUrl="~/Logueo.aspx">Iniciar sesión</asp:HyperLink>
                 </div>
             </div>
-            <table style="width: 100%;">
-                <tr>
-                    <td class="auto-style1">Filtrar por fecha</td>
-                    <td class="auto-style2">&nbsp;Año:&nbsp;
-                    <asp:TextBox ID="txtFilAnio" runat="server" Width="72px"></asp:TextBox>
-                        &nbsp;- Mes:&nbsp;
-                    <asp:TextBox ID="txtFilMes" runat="server" Width="52px"></asp:TextBox>
-                        &nbsp;Día:&nbsp;
-                    <asp:TextBox ID="txtFilDia" runat="server" Width="57px"></asp:TextBox>
-                        &nbsp;&nbsp; </td>
-                    <td>
-                        <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">&nbsp;</td>
-                    <td class="auto-style2">
-                        <asp:Button ID="btnLimpiarFiltro" runat="server" Text="Limpiar Filtro" OnClick="btnLimpiarFiltro_Click" />
-                    </td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">&nbsp;</td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">
-                        <asp:GridView ID="grvSolicitudes" runat="server" OnSelectedIndexChanged="grvSolicitudes_SelectedIndexChanged">
+            <div class="row">
+                 <div class="auto-style1 h4 mb-3">Filtrar por fecha</div>
+                 <div class="auto-style2">
+                     <div class="row mb-2"><span>Año: </span> 
+                    <asp:TextBox ID="txtFilAnio" runat="server" Width="72px"></asp:TextBox><asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Ingrese año válido - 4 números" ControlToValidate="txtFilAnio" Display="Dynamic" ForeColor="Red" MaximumValue="9999" MinimumValue="0000" SetFocusOnError="True" Type="Integer" ValidationGroup="fecha"></asp:RangeValidator> </div>
+                     <div class="row mb-2"><span>Mes:</span>
+                    <asp:TextBox ID="txtFilMes" runat="server" Width="52px"></asp:TextBox><asp:RangeValidator ID="RangeValidator2" runat="server" ErrorMessage="Ingrese mes válido - 01 a 12" ControlToValidate="txtFilMes" Display="Dynamic" ForeColor="Red" MaximumValue="12" MinimumValue="01" SetFocusOnError="True" Type="Integer" ValidationGroup="fecha"></asp:RangeValidator></div>                           
+                     <div class="row mb-2"><span>Día:</span> 
+                    <asp:TextBox ID="txtFilDia" runat="server" Width="57px"></asp:TextBox><asp:RangeValidator ID="RangeValidator3" runat="server" ErrorMessage="Ingrese dia válido - 01 a 31" ControlToValidate="txtFilDia" Display="Dynamic" ForeColor="Red" MaximumValue="31" MinimumValue="01" SetFocusOnError="True" Type="Integer" ValidationGroup="fecha"></asp:RangeValidator></div>
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div>
+                        <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" class="btn btn-outline-success mx-2" ValidationGroup="fecha"/>
+                    </div>
+                    <div>
+                        <asp:Button ID="btnLimpiarFiltro" runat="server" Text="Limpiar Filtro" OnClick="btnLimpiarFiltro_Click" class="btn btn-outline-success"/>
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-6">     
+                        <asp:GridView ID="grvSolicitudes" runat="server" OnSelectedIndexChanged="grvSolicitudes_SelectedIndexChanged" AutoGenerateColumns="False">
                             <Columns>
                                 <asp:CommandField HeaderText="Listar Paquetes" SelectText="Ver" ShowSelectButton="True" />
+                                <asp:BoundField DataField="NumeroInterno" HeaderText="Número" />
+                                <asp:BoundField DataField="FechaEntrega" HeaderText="Fecha de Entrega" />
+                                <asp:BoundField DataField="NombreDestinatario" HeaderText="Destinatario" />
+                                <asp:BoundField DataField="DireccionDestinatario" HeaderText="Dirección" />
                             </Columns>
-                        </asp:GridView>
-                    </td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">
-                        <asp:Label ID="lblMensaje" runat="server"></asp:Label>
-                    </td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">
-                        &nbsp;</td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">
+                         </asp:GridView> 
+                    </div>
+
+                    <div class="col-md-6">
                         <asp:Xml ID="XmlPaquetes" runat="server" TransformSource="~/Paquetes.xslt"></asp:Xml>
-                    </td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style1">
-                        &nbsp;</td>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="auto-style3">
-                        &nbsp;</td>
-                    <td class="auto-style4"></td>
-                    <td class="auto-style5"></td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <asp:Label ID="lblMensaje" runat="server"></asp:Label>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
 </body>
 </html>

@@ -57,8 +57,9 @@ public partial class ABMEmpresa : System.Web.UI.Page
                 txtTelefono.Enabled = true;
                 txtDireccion.Enabled = true;
                 txtEmail.Enabled = true;
+                txtContra.Enabled = false;
 
-                lblMensaje.Text = "La Empleado " + usuempresa.Nombre + " existe. Quiere modificarla o eliminarla";
+                lblMensaje.Text = "Usuario Empresa " + usuempresa.Nombre + " existe. Quiere modificar o eliminar";
                 txtNombre.Text = usuempresa.Nombre;
                 txtTelefono.Text = usuempresa.Telefono;
                 txtDireccion.Text = usuempresa.Direccion;

@@ -14,6 +14,6 @@ namespace Logica.Interfaces
         void ModificarUsuario(Usuario U, UsuarioEmpleado ULogueado);
         Usuario BuscarUsuario(string pNombreUsuario, UsuarioEmpleado ULogueado);
         Usuario LogueoUsuario(string pNombreUsuario, string pContrasenia);
-
+        void CambioContrasena(string pNuevaContrasenia, Usuario ULogueado);
     }
 }
